@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.braintrainapp
 
 import org.junit.Test
 
