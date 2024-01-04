@@ -40,7 +40,7 @@ fun MyApp() {
                 MemoryGame(navController = navController)
             }
             composable(Screen.AttentionGame.route) {
-                AttentionGame()
+                AttentionGame(navController = navController)
             }
             composable(Screen.LanguageGame.route) {
                 LanguageGame()
