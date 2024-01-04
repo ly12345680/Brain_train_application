@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,59 +13,40 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBarColors
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
-import com.example.braintrainapp.ui.MemoryGame
-import kotlinx.coroutines.NonDisposableHandle.parent
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 fun checkWin(blueSquares: List<Boolean>, selectedSquares: List<Boolean>): Boolean {
     for((index, value) in blueSquares.withIndex()) {
@@ -119,7 +99,7 @@ fun ScoreAndLevel(score: Int) {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MemorySweepGame() {
+fun ColorMemory() {
     var gridSize by remember { mutableStateOf(2) }
     val numberOfBlueSquares = gridSize
     val squares = List(gridSize * gridSize) { false }.toMutableStateList()
@@ -133,10 +113,11 @@ fun MemorySweepGame() {
     var score = remember {
         mutableStateOf(0)
     }
+    val maxLevel = 5
     var level = remember { mutableStateOf(1)}
     var timeLeft by remember { mutableStateOf(5) } // 30 seconds to guess
 
-    val maxLevel = 5
+
 
         LaunchedEffect(key1 = gameStarted) {
 
@@ -336,16 +317,12 @@ fun MemorySweepGame() {
                 }
             }
         }
-
     }
-
-
-
 
 }
 
 @Preview
 @Composable
-fun MemoryGanmePreview() {
-    MemorySweepGame()
+fun ColorMemoryPreview() {
+    ColorMemory()
 }

@@ -12,8 +12,9 @@ import com.example.braintrainapp.ui.LanguageGame
 import com.example.braintrainapp.ui.MainMenu
 import com.example.braintrainapp.ui.MathGame
 import com.example.braintrainapp.ui.MemoryGame
+import com.example.braintrainapp.ui.memory.ColorMemory
 import com.example.braintrainapp.ui.memory.Image
-import com.example.braintrainapp.ui.memory.MemorySweepGame
+
 
 sealed class Screen(val route: String) {
     object MainMenu : Screen("mainMenu")
@@ -22,7 +23,7 @@ sealed class Screen(val route: String) {
     object LanguageGame : Screen("languageGame")
     object MathGame : Screen("mathGame")
     object Image : Screen("image")
-    object MemorySweep : Screen("memorySweep")
+    object ColorMemory : Screen("colorMemory")
 }
 @Composable
 fun MyApp() {
@@ -47,8 +48,8 @@ fun MyApp() {
             composable(Screen.MathGame.route) {
                 MathGame()
             }
-            composable(Screen.MemorySweep.route) {
-                MemorySweepGame()
+            composable(Screen.ColorMemory.route) {
+                ColorMemory()
             }
 
 

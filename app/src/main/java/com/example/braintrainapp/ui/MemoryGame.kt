@@ -49,7 +49,7 @@ fun MemoryGame(navController: NavController) {
         Button(onClick = { /*TODO*/ }) {
             Text(text = "Finding a New Image")
         }
-        Button(onClick = { navController.navigate(Screen.MemorySweep.route) }) {
+        Button(onClick = { navController.navigate(Screen.ColorMemory.route) }) {
             Text(text = "What Is That Image")
         }
     }
