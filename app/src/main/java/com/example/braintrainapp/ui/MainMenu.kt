@@ -34,7 +34,10 @@ import com.example.braintrainapp.Screen
  * next screen
  */
 @Composable
-fun MainMenu(navController: NavController) {
+fun MainMenu(navController: NavController
+
+)
+{
     val myColor = colorResource(id = R.color.sari)
     Column(
         modifier = Modifier
