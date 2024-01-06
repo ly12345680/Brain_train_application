@@ -44,13 +44,13 @@ fun MemoryGame(navController: NavController) {
             ),
             modifier = Modifier.padding(vertical = 16.dp)
         )
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = { navController.navigate(Screen.ColorMemory.route) }) {
             Text(text = "Color Memorization")
         }
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = {  navController.navigate(Screen.FindNewImage.route)}) {
             Text(text = "Finding a New Image")
         }
-        Button(onClick = { navController.navigate(Screen.ColorMemory.route) }) {
+        Button(onClick = {}) {
             Text(text = "What Is That Image")
         }
     }
