@@ -26,6 +26,7 @@ import com.example.braintrainapp.Screen
 
 @Composable
 fun MemoryGame(navController: NavController) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
