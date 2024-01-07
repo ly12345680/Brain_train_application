@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,10 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
+import com.example.braintrainapp.Screen
 
 @Composable
-fun AttentionGame(){
+fun AttentionGame(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,20 +37,26 @@ fun AttentionGame(){
         Text(
             text = "Attention Game",
             style = TextStyle(
-
-                fontSize = 30.sp, // Increase the font size to make it bigger
-                color = Color.Black // Change the color to make it more highlighted
+                fontSize = 30.sp,
+                color = Color.Black
             ),
             modifier = Modifier.padding(vertical = 16.dp)
         )
-        Image(
-            painter = painterResource(id = R.drawable.resim),
-            contentDescription = "App Logo"
-        )
+        Button(onClick = { /* TODO: Implement your logic */ }) {
+            Text(text = "Find Differences")
+        }
+        Button(onClick = { /* TODO: Implement your logic */ }) {
+            Text(text = "Game mode 2")
+        }
+        Button(onClick = { navController.navigate(Screen.AttentionGame.route) }) {
+            Text(text = "Catch Fish")
+        }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun AttentionGamePreview() {
-    AttentionGame()
+    val navController = rememberNavController()
+    AttentionGame(navController = navController)
 }
