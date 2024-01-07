@@ -12,6 +12,7 @@ import com.example.braintrainapp.ui.LanguageGame
 import com.example.braintrainapp.ui.MainMenu
 import com.example.braintrainapp.ui.MathGame
 import com.example.braintrainapp.ui.MemoryGame
+import com.example.braintrainapp.ui.attention.FinDifferences
 import com.example.braintrainapp.ui.memory.ColorMemory
 import com.example.braintrainapp.ui.memory.FindNewImage
 import com.example.braintrainapp.ui.memory.PairImage
@@ -26,6 +27,7 @@ sealed class Screen(val route: String) {
     object PairImage : Screen("pairImage")
     object ColorMemory : Screen("colorMemory")
     object FindNewImage : Screen("findNewImage")
+    object FindDifferences : Screen("findDifferences")
 }
 @Composable
 fun MyApp() {
@@ -58,6 +60,9 @@ fun MyApp() {
             }
             composable(Screen.PairImage.route) {
                 PairImage()
+            }
+            composable(Screen.FindDifferences.route) {
+                FinDifferences()
             }
 
 

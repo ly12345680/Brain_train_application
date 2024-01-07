@@ -42,11 +42,11 @@ fun AttentionGame(navController: NavController) {
             ),
             modifier = Modifier.padding(vertical = 16.dp)
         )
-        Button(onClick = { /* TODO: Implement your logic */ }) {
+        Button(onClick = { navController.navigate(Screen.FindDifferences.route) }) {
             Text(text = "Find Differences")
         }
-        Button(onClick = { /* TODO: Implement your logic */ }) {
-            Text(text = "Game mode 2")
+        Button(onClick = { navController.navigate((Screen.PairImage.route))}) {
+            Text(text = "Pair Image")
         }
         Button(onClick = { navController.navigate(Screen.AttentionGame.route) }) {
             Text(text = "Catch Fish")
