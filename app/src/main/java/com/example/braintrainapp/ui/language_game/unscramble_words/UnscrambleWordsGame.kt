@@ -1,7 +1,9 @@
 package com.example.braintrainapp.ui.language_game.unscramble_words
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
@@ -9,6 +11,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,7 +22,7 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 import java.util.*
 
-data class Question(val phrase: String, val answer: String)
+//data class Question(val phrase: String, val answer: String)
 
 //@OptIn(ExperimentalMaterial3Api::class)
 //@Composable
@@ -122,68 +125,142 @@ fun UnscrambleWordsGame() {
 
     val userAnswerState = remember { mutableStateOf(TextFieldValue()) }
 
+    val score = remember { mutableStateOf(0)}
+    val questionCount = remember { mutableStateOf(0) }
+    val playAgain = remember { mutableStateOf(false)}
+
     Column(
         modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Unscramble Word",
-            style = TextStyle(fontSize = 24.sp),
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        Text(
-            text = "What is this word?",
-            style = TextStyle(fontSize = 16.sp),
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        Text(
-            text = currentWord.value.toList().shuffled().joinToString(""),
-            style = TextStyle(fontSize = 20.sp),
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        TextField(
-            value = userAnswerState.value,
-            onValueChange = { userAnswerState.value = it },
-            label = { Text("Enter your answer") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Button(
-            onClick = {
-                val userAnswer = userAnswerState.value.text
-                val isCorrectAnswer = userAnswer.equals(currentWord.value, ignoreCase = true)
-                snackbarMessage = if (isCorrectAnswer) "Correct!" else "Incorrect!"
-                snackbarVisible = true
-                coroutineScope.launch {
-                    delay(1500)
-                    snackbarVisible = false
-
-                    if (isCorrectAnswer) {
-                        val nextIndex = (currentWordIndex.value + 1) % allWordsList.size
-                        currentWordIndex.value = nextIndex
-                        currentWord.value = allWordsList[nextIndex]
-
-                        userAnswerState.value = TextFieldValue()
-                    }
-                }
-            },
-            modifier = Modifier.padding(top = 16.dp)
-        ) {
-            Text(text = "Check Answer")
-        }
-
-        if (snackbarVisible) {
-            Snackbar(
-                modifier = Modifier.padding(top = 16.dp),
-                action = {
-                    Button(onClick = { snackbarVisible = false }) {
-                        Text("Dismiss")
-                    }
-                }
+        if (!playAgain.value){
+//            Text(
+//                text = "Unscramble Word",
+//                style = TextStyle(fontSize = 24.sp),
+//                modifier = Modifier.padding(bottom = 16.dp)
+//            )
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = snackbarMessage)
+                Text(
+                    text = "Unscramble Word",
+                    style = TextStyle(fontSize = 24.sp),
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                Text(
+                    text = "Score: ${score.value}",
+                    style = TextStyle(fontSize = 16.sp),
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFFE6EE9C))
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ){
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Text(
+                        text = "What is this word?",
+                        style = TextStyle(fontSize = 16.sp),
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Text(
+                        text = currentWord.value.toList().shuffled().joinToString(""),
+                        style = TextStyle(fontSize = 20.sp),
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+
+                    TextField(
+                        value = userAnswerState.value,
+                        onValueChange = { userAnswerState.value = it },
+                        label = { Text("Enter your answer") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Button(
+                        onClick = {
+                            val userAnswer = userAnswerState.value.text
+                            val isCorrectAnswer =
+                                userAnswer.equals(currentWord.value, ignoreCase = true)
+                            snackbarMessage = if (isCorrectAnswer) "Correct!" else "Incorrect!"
+                            snackbarVisible = true
+                            coroutineScope.launch {
+                                delay(1500)
+                                snackbarVisible = false
+
+                                if (isCorrectAnswer) {
+                                    val nextIndex = Random.nextInt(0, allWordsList.size)
+                                    currentWordIndex.value = nextIndex
+                                    currentWord.value = allWordsList[nextIndex]
+
+                                    userAnswerState.value = TextFieldValue()
+                                    score.value += 200
+                                }
+
+                                questionCount.value += 1
+                                if (questionCount.value >= 10) {
+                                    playAgain.value = true
+                                }
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(Color.DarkGray),
+                        modifier = Modifier.padding(top = 16.dp)
+                    ) {
+                        Text(text = "Check Answer")
+                    }
+                }
+
+//            Text(
+//                text = "Score: ${score.value}",
+//                style = TextStyle(fontSize = 16.sp),
+//                modifier = Modifier.padding(top = 8.dp)
+//            )
+
+                if (snackbarVisible) {
+                    Snackbar(
+                        modifier = Modifier.padding(top = 16.dp),
+                        action = {
+                            Button(onClick = { snackbarVisible = false }) {
+                                Text("Dismiss")
+                            }
+                        }
+                    ) {
+                        Text(text = snackbarMessage)
+                    }
+                }
+            }
+        } else {
+            Text(
+                text = "Total Score: ${score.value}",
+                style = TextStyle(fontSize = 24.sp),
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            Button(
+                onClick = {
+                    // Reset all variables to play again
+                    questionCount.value = 0
+                    score.value = 0
+                    currentWordIndex.value = Random.nextInt(0, allWordsList.size)
+                    currentWord.value = allWordsList[currentWordIndex.value]
+                    userAnswerState.value = TextFieldValue()
+                    playAgain.value = false
+                },
+                modifier = Modifier.padding(top = 16.dp)
+            ) {
+                Text(
+                    text = "Play Again",
+                    style = TextStyle(fontSize = 24.sp),
+                    modifier = Modifier.padding(bottom = 16.dp))
             }
         }
     }

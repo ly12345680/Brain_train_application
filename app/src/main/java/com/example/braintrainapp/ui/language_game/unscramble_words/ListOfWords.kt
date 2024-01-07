@@ -1,8 +1,8 @@
 package com.example.braintrainapp.ui.language_game.unscramble_words
 
 
-    const val MAX_NO_OF_WORDS = 10
-    const val SCORE_INCREASE = 20
+//    const val MAX_NO_OF_WORDS = 10
+//    const val SCORE_INCREASE = 200
 
     // List with all the words for the Game
     val allWordsList: List<String> =
