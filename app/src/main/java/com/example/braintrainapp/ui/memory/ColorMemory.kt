@@ -115,7 +115,7 @@ fun ColorMemory() {
     }
     val maxLevel = 5
     var level = remember { mutableStateOf(1)}
-    var timeLeft by remember { mutableStateOf(5) } // 30 seconds to guess
+    var timeLeft by remember { mutableStateOf(5) }
 
 
 

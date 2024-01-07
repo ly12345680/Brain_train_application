@@ -14,7 +14,7 @@ import com.example.braintrainapp.ui.MathGame
 import com.example.braintrainapp.ui.MemoryGame
 import com.example.braintrainapp.ui.memory.ColorMemory
 import com.example.braintrainapp.ui.memory.FindNewImage
-import com.example.braintrainapp.ui.memory.Image
+import com.example.braintrainapp.ui.memory.PairImage
 
 
 sealed class Screen(val route: String) {
@@ -23,7 +23,7 @@ sealed class Screen(val route: String) {
     object AttentionGame : Screen("attentionGame")
     object LanguageGame : Screen("languageGame")
     object MathGame : Screen("mathGame")
-    object Image : Screen("image")
+    object PairImage : Screen("pairImage")
     object ColorMemory : Screen("colorMemory")
     object FindNewImage : Screen("findNewImage")
 }
@@ -55,6 +55,9 @@ fun MyApp() {
             }
             composable(Screen.FindNewImage.route) {
                 FindNewImage()
+            }
+            composable(Screen.PairImage.route) {
+                PairImage()
             }
 
 
