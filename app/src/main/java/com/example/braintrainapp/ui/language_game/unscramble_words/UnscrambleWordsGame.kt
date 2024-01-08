@@ -7,6 +7,7 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -109,6 +110,7 @@ data class Question(val phrase: String, val answer: String)
 //    }
 //}
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UnscrambleWordsGame() {
@@ -118,7 +120,7 @@ fun UnscrambleWordsGame() {
     val coroutineScope = rememberCoroutineScope()
 
     val currentWordIndex = remember { mutableStateOf(Random.nextInt(0, allWordsList.size)) }
-    val currentWord = remember { mutableStateOf(allWordsList[currentWordIndex.value]) }
+    val currentWord = rememberSaveable { mutableStateOf(allWordsList[currentWordIndex.value]) }
 
     val userAnswerState = remember { mutableStateOf(TextFieldValue()) }
 
