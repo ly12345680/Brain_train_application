@@ -1,7 +1,9 @@
 package com.example.braintrainapp.ui.language_game.unscramble_words
 
+import android.os.CountDownTimer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,96 +24,6 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 import java.util.*
 
-//data class Question(val phrase: String, val answer: String)
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun UnscrambleWordsGame() {
-//    var currentQuestionIndex by remember { mutableStateOf(0) }
-//    var score by remember { mutableStateOf(0) }
-//    var responseTime by remember { mutableStateOf(0L) }
-//    var totalScore by remember { mutableStateOf(0) }
-//    var averageResponseTime by remember { mutableStateOf(0L) }
-//    var bonusScore by remember { mutableStateOf(0) }
-//    var gameFinished by remember { mutableStateOf(false) }
-//
-//    if (currentQuestionIndex < 10) {
-//        val currentQuestion = generateRandomQuestion()
-//        var userInput by remember { mutableStateOf("") }
-//        var timerRunning by remember { mutableStateOf(false) }
-//        var secondsLeft by remember { mutableStateOf(20) }
-//
-//        LaunchedEffect(Unit) {
-//            timerRunning = true
-//            withContext(Dispatchers.Default) {
-//                while (secondsLeft > 0 && timerRunning) {
-//                    delay(1000)
-//                    secondsLeft--
-//                }
-//            }
-//
-//            if (timerRunning) {
-//                checkAnswer(currentQuestion.answer, userInput)
-//                timerRunning = false
-//            }
-//        }
-//
-//        Column(
-//            modifier = Modifier.fillMaxSize(),
-//            verticalArrangement = Arrangement.Center,
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Text(text = "Unscramble Word", style = MaterialTheme.typography.headlineMedium,
-//                modifier = Modifier.padding(bottom = 16.dp))
-//            Text(text = currentQuestion.phrase)
-//            Text(text = "Seconds Left: $secondsLeft")
-//            Text(text = "Score: $score")
-//
-//            TextField(
-//                value = userInput,
-//                onValueChange = { userInput = it },
-//                modifier = Modifier.padding(top = 16.dp)
-//            )
-//
-//            Button(
-//                onClick = {
-//                    checkAnswer(currentQuestion.answer, userInput)
-//                    timerRunning = false
-//                },
-//                modifier = Modifier.padding(top = 16.dp)
-//            ) {
-//                Text(text = "Submit")
-//            }
-//
-//            Text(text = "Total Score: $totalScore")
-//            Text(text = "Average Response Time: $averageResponseTime")
-//            Text(text = "Bonus Score: $bonusScore")
-//        }
-//    } else {
-//        gameFinished = true
-//        averageResponseTime = responseTime / 10
-//        totalScore = score + bonusScore
-//    }
-//
-//    if (gameFinished) {
-//        Column(
-//            modifier = Modifier.fillMaxSize(),
-//            verticalArrangement = Arrangement.Center,
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Text(text = "Game Finished")
-//            Text(text = "Total Score: $totalScore")
-//            Text(text = "Average Response Time: $averageResponseTime")
-//            Button(
-//                onClick = { restartGame() },
-//                modifier = Modifier.padding(top = 16.dp)
-//            ) {
-//                Text(text = "Restart Game")
-//            }
-//        }
-//    }
-//}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UnscrambleWordsGame() {
@@ -129,37 +41,60 @@ fun UnscrambleWordsGame() {
     val questionCount = remember { mutableStateOf(0) }
     val playAgain = remember { mutableStateOf(false)}
 
+    var timeRemaining by remember { mutableStateOf(20_000L) }
+    val timer = remember {
+        GameCountDownTimer(
+            20000,
+            1000,
+            onFinish = {},
+            onTick = {millisUntilFinished ->
+                timeRemaining = millisUntilFinished})}
+
     Column(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier
+            .padding(16.dp), //.background(Color(0xffffcc99)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (!playAgain.value){
-//            Text(
-//                text = "Unscramble Word",
-//                style = TextStyle(fontSize = 24.sp),
-//                modifier = Modifier.padding(bottom = 16.dp)
-//            )
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xffffcc99), RoundedCornerShape(16.dp)),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Text(
+                        text = "Unscramble Word",
+                        style = TextStyle(fontSize = 24.sp),
+                        modifier = Modifier.padding(bottom = 16.dp, top = 16.dp) //.background(Color(0xffffcc99))
+                    )
+                }
                 Text(
-                    text = "Unscramble Word",
-                    style = TextStyle(fontSize = 24.sp),
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    text = "Time: ${timeRemaining / 1000}",
+                    style = TextStyle(fontSize = 20.sp),
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
-                Text(
-                    text = "Score: ${score.value}",
-                    style = TextStyle(fontSize = 16.sp),
-                    modifier = Modifier.padding(top = 8.dp)
-                )
+                Button (
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(Color(0xFFF06292)),
+                    modifier = Modifier.padding(top = 16.dp)
+                ){
+                    Text(
+                        text = "Score: ${score.value}",
+                        style = TextStyle(fontSize = 20.sp),
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
             }
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFFE6EE9C))
+                    .background(Color(0xFFE6EE9C), RoundedCornerShape(16.dp))
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
             ){
@@ -170,7 +105,7 @@ fun UnscrambleWordsGame() {
                 ){
                     Text(
                         text = "What is this word?",
-                        style = TextStyle(fontSize = 16.sp),
+                        style = TextStyle(fontSize = 20.sp),
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
@@ -209,6 +144,8 @@ fun UnscrambleWordsGame() {
                                 questionCount.value += 1
                                 if (questionCount.value >= 10) {
                                     playAgain.value = true
+                                } else {
+                                    timer.start()
                                 }
                             }
                         },
@@ -219,13 +156,8 @@ fun UnscrambleWordsGame() {
                     }
                 }
 
-//            Text(
-//                text = "Score: ${score.value}",
-//                style = TextStyle(fontSize = 16.sp),
-//                modifier = Modifier.padding(top = 8.dp)
-//            )
-
                 if (snackbarVisible) {
+
                     Snackbar(
                         modifier = Modifier.padding(top = 16.dp),
                         action = {
@@ -247,7 +179,7 @@ fun UnscrambleWordsGame() {
 
             Button(
                 onClick = {
-                    // Reset all variables to play again
+                    // Restart all variables to play one more timr
                     questionCount.value = 0
                     score.value = 0
                     currentWordIndex.value = Random.nextInt(0, allWordsList.size)
@@ -263,27 +195,31 @@ fun UnscrambleWordsGame() {
                     modifier = Modifier.padding(bottom = 16.dp))
             }
         }
+
+        DisposableEffect(Unit) {
+            timer.start()
+
+            onDispose {
+                timer.cancel()
+            }
+        }
     }
 }
+class GameCountDownTimer(
+    millisInFuture: Long,
+    countDownInterval: Long,
+    private val onFinish: () -> Unit,
+    private val onTick: (Long) -> Unit
+) : CountDownTimer(millisInFuture, countDownInterval) {
 
-//fun generateRandomQuestion(): Question {
-//    val random = Random.Default
-//    val randomIndex = random.nextInt(allWordsList.size)
-//    val word = allWordsList[randomIndex]
-//    val shuffledWord = word.toCharArray().apply { shuffle(random) }.joinToString("")
-//    return Question(shuffledWord, word)
-//}
+    override fun onTick(millisUntilFinished: Long) {
+        onTick.invoke(millisUntilFinished)
+    }
 
-//fun checkAnswer(correctAnswer: String, userAnswer: String) {
-//    if (correctAnswer.lowercase(Locale.getDefault()) == userAnswer.lowercase(Locale.getDefault())) {
-//        var score = 200
-//    }
-//}
-//
-//fun restartGame() {
-//    // Reset game state variables here
-//}
-
+    override fun onFinish() {
+        onFinish.invoke()
+    }
+}
 @Preview
 @Composable
 fun PreviewUnscrambleGame() {
