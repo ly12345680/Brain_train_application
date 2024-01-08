@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
@@ -356,6 +357,7 @@ fun CardView(imageId: Int, isOpen: Boolean, onClick: () -> Unit) {
             .size(64.dp)
             .padding(4.dp)
             .clickable(onClick = onClick)
+            .background(Color.Transparent, CircleShape)
     ) {
         if (isOpen) {
             imageCheck()
