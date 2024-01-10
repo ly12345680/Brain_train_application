@@ -67,13 +67,15 @@ fun LetterWordHunt() {
             word = word,
             onWordChange = { word = it },
             dialogShown = dialogShown,
-            onDialogDismiss = { dialogShown = false }
+            onDialogDismiss = { dialogShown = false },
+            onPlayAgainRequest = { dialogShown = true}
         )
         if (dialogShown) {
             GameOverDialog(
                 score = score,
                 wordsFound = wordsFound,
-                onDismissRequest = { dialogShown = false })
+                onDismissRequest = { dialogShown = false },
+                onPlayAgainRequest = { dialogShown = true})
         }
     }
 
@@ -82,7 +84,7 @@ fun LetterWordHunt() {
         dialogShown = true
     }
 
-    suspend fun startGame() {
+    fun startGame() {
         timerJob = CoroutineScope(Dispatchers.Default).launch {
             while (remainingTime > 0) {
                 delay(1000)
@@ -91,17 +93,33 @@ fun LetterWordHunt() {
             endGame()
         }
     }
+
     if (timerJob == null) {
         val coroutineScope = rememberCoroutineScope()
         timerJob = coroutineScope.launch {
             startGame()
         }
     }
-//    if (timerJob == null) {
-//        startGame()
-//    }
 
+    fun startNewGame() {
+        score = 0
+        wordsFound = 0
+        remainingTime = gameDuration
+        currentLetter = generateLetter()
+        word = ""
+        dialogShown = false
+        timerJob = null
+        startGame()
+    }
 
+    if (dialogShown) {
+        GameOverDialog(
+            score = score,
+            wordsFound = wordsFound,
+            onDismissRequest = { dialogShown = false },
+            onPlayAgainRequest = { startNewGame() }
+        )
+    }
 }
 
 @Composable
@@ -114,7 +132,8 @@ fun GameScreen(
     word: String,
     onWordChange: (String) -> Unit,
     dialogShown: Boolean,
-    onDialogDismiss: () -> Unit
+    onDialogDismiss: () -> Unit,
+    onPlayAgainRequest: () -> Unit
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
@@ -166,7 +185,7 @@ fun GameScreen(
                 modifier = Modifier.padding(top = 16.dp)
             ) {
                 Text(
-                    text = "Word found: $wordsFound",
+                    text = "Countries found: $wordsFound",
                     style = TextStyle(fontSize = 16.sp),
                     textAlign = TextAlign.Center
                 )
@@ -176,7 +195,11 @@ fun GameScreen(
     }
 
     if (dialogShown) {
-        GameOverDialog(score = score, wordsFound = wordsFound, onDismissRequest = onDialogDismiss)
+        GameOverDialog(
+            score = score,
+            wordsFound = wordsFound,
+            onDismissRequest = onDialogDismiss,
+            onPlayAgainRequest = onPlayAgainRequest)
     }
 }
 
@@ -215,7 +238,12 @@ fun WordInput(word: String, onWordChange: (String) -> Unit, onWordFound: (String
 }
 
 @Composable
-fun GameOverDialog(score: Int, wordsFound: Int, onDismissRequest: () -> Unit) {
+fun GameOverDialog(
+    score: Int,
+    wordsFound: Int,
+    onDismissRequest: () -> Unit,
+    onPlayAgainRequest: () -> Unit
+) {
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
@@ -242,9 +270,16 @@ fun GameOverDialog(score: Int, wordsFound: Int, onDismissRequest: () -> Unit) {
                 )
                 Text(
                     text = "Countries Found: $wordsFound",
-                    style = TextStyle(fontSize = 16.sp),
+                    style = TextStyle(fontSize = 20.sp),
                     textAlign = TextAlign.Center
                 )
+                Button (
+                    onClick = onPlayAgainRequest,
+                    modifier = Modifier.padding(top = 16.dp)
+                ){
+                    Text(text = "Play Again")
+                }
+
             }
         }
     }
