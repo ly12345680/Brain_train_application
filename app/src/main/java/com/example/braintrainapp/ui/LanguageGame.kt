@@ -1,6 +1,5 @@
 package com.example.braintrainapp.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
@@ -50,7 +48,7 @@ fun LanguageGame(navController : NavController){
         Button(onClick = { navController.navigate(Screen.UnscrambleWordsGame.route) }) {
             Text(text = "Unscramble Words")
         }
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = { navController.navigate(Screen.LetterWordHunt.route) }) {
             Text(text = "Letter Word Hunt")
         }
         Button(onClick = { /*TODO*/ }) {

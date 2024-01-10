@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 import java.util.*
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,11 +42,12 @@ fun UnscrambleWordsGame() {
     val playAgain = remember { mutableStateOf(false)}
 
     var timeRemaining by remember { mutableStateOf(20_000L) }
+    val shuffleQuestion = remember { mutableStateOf(true) }
     val timer = remember {
         GameCountDownTimer(
             20000,
             1000,
-            onFinish = {},
+            onFinish = { shuffleQuestion.value = true},
             onTick = {millisUntilFinished ->
                 timeRemaining = millisUntilFinished})}
 
@@ -55,7 +56,7 @@ fun UnscrambleWordsGame() {
             .padding(16.dp), //.background(Color(0xffffcc99)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (!playAgain.value){
+
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.SpaceBetween,
@@ -79,7 +80,10 @@ fun UnscrambleWordsGame() {
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
                 Button (
-                    onClick = {},
+                    onClick = {
+                        shuffleQuestion.value = false // Stop shuffling the question
+                        timer.start() // Start the timer
+                    },
                     colors = ButtonDefaults.buttonColors(Color(0xFFF06292)),
                     modifier = Modifier.padding(top = 16.dp)
                 ){
@@ -109,7 +113,9 @@ fun UnscrambleWordsGame() {
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = currentWord.value.toList().shuffled().joinToString(""),
+                        //text = currentWord.value.toList().shuffled().joinToString(""),
+                        text = if (shuffleQuestion.value) currentWord.value.toList().shuffled()
+                            .joinToString("") else currentWord.value,
                         style = TextStyle(fontSize = 20.sp),
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
@@ -134,6 +140,7 @@ fun UnscrambleWordsGame() {
 
                                 if (isCorrectAnswer) {
                                     val nextIndex = Random.nextInt(0, allWordsList.size)
+
                                     currentWordIndex.value = nextIndex
                                     currentWord.value = allWordsList[nextIndex]
 
@@ -170,7 +177,9 @@ fun UnscrambleWordsGame() {
                     }
                 }
             }
-        } else {
+
+
+        if (playAgain.value){
             Text(
                 text = "Total Score: ${score.value}",
                 style = TextStyle(fontSize = 24.sp),
@@ -220,8 +229,156 @@ class GameCountDownTimer(
         onFinish.invoke()
     }
 }
+
 @Preview
 @Composable
 fun PreviewUnscrambleGame() {
     UnscrambleWordsGame()
 }
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun QuestionDisplay(
+//    currentWord: MutableState<String>,
+//    userAnswerState: MutableState<TextFieldValue>,
+//    onCheckAnswer: () -> Unit,
+//    snackbarVisible: Boolean,
+//    snackbarMessage: String
+//) {
+//    Box(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .background(Color(0xFFE6EE9C), RoundedCornerShape(16.dp))
+//            .padding(16.dp),
+//        contentAlignment = Alignment.Center
+//    ) {
+//        Column(
+//            modifier = Modifier.fillMaxWidth(),
+//            verticalArrangement = Arrangement.SpaceBetween,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            Text(
+//                text = "What is this word?",
+//                style = TextStyle(fontSize = 20.sp),
+//                modifier = Modifier.padding(bottom = 8.dp)
+//            )
+//            Text(
+//                text = currentWord.value.toList().shuffled().joinToString(""),
+//                style = TextStyle(fontSize = 20.sp),
+//                modifier = Modifier.padding(bottom = 16.dp)
+//            )
+//
+//            TextField(
+//                value = userAnswerState.value,
+//                onValueChange = { userAnswerState.value = it },
+//                label = { Text("Enter your answer") },
+//                modifier = Modifier.fillMaxWidth()
+//            )
+//
+//            Button(
+//                onClick = onCheckAnswer,
+//                colors = ButtonDefaults.buttonColors(Color.DarkGray),
+//                modifier = Modifier.padding(top = 16.dp)
+//            ) {
+//                Text(text = "Check Answer")
+//            }
+//        }
+//
+//        if (snackbarVisible) {
+//            Snackbar(
+//                modifier = Modifier.padding(top = 16.dp),
+//                action = {
+//                    Button(onClick = { /* dismiss snackbar */ }) {
+//                        Text("Dismiss")
+//                    }
+//                }
+//            ) {
+//                Text(text = snackbarMessage)
+//            }
+//        }
+//    }
+//}
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun UnscrambleWordsGame() {
+//    val currentWordIndex = remember { mutableStateOf(Random.nextInt(0, allWordsList.size)) }
+//    val currentWord = remember { mutableStateOf(allWordsList[currentWordIndex.value]) }
+//
+//    val userAnswerState = remember { mutableStateOf(TextFieldValue()) }
+//
+//    val score = remember { mutableStateOf(0) }
+//    val questionCount = remember { mutableStateOf(0) }
+//    val playAgain = remember { mutableStateOf(false) }
+//
+//    var timeRemaining by remember { mutableStateOf(20_000L) }
+//    val timer = remember {
+//        object : CountDownTimer(timeRemaining, 1000) {
+//            override fun onTick(millisUntilFinished: Long) {
+//                timeRemaining = millisUntilFinished
+//            }
+//
+//            override fun onFinish() {
+//                playAgain.value = true
+//            }
+//        }
+//    }
+//
+//    Column(
+//        modifier = Modifier.padding(16.dp),
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//        if (!playAgain.value) {
+//            Column(
+//                modifier = Modifier.fillMaxWidth(),
+//                verticalArrangement = Arrangement.SpaceBetween,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                Text(
+//                    text = "Score: ${score.value}",
+//                    style = TextStyle(fontSize = 20.sp),
+//                    modifier = Modifier.padding(top = 8.dp)
+//                )
+//                Text(
+//                    text = "Time: ${timeRemaining / 1000}s",
+//                    style = TextStyle(fontSize = 20.sp),
+//                    modifier = Modifier.padding(top = 8.dp)
+//                )
+//            }
+//
+//            LaunchedEffect(Unit) {
+//                timer.start()
+//            }
+//        }
+//
+//        QuestionDisplay(
+//            currentWord = currentWord,
+//            userAnswerState = userAnswerState,
+//            onCheckAnswer = {
+//                val userAnswer = userAnswerState.value.text.toLowerCase()
+//                if (userAnswer == currentWord.value) {
+//                    score.value += 200
+//                }
+//                questionCount.value++
+//                userAnswerState.value = TextFieldValue()
+//                currentWordIndex.value = Random.nextInt(0, allWordsList.size)
+//                currentWord.value = allWordsList[currentWordIndex.value]
+//            },
+//            snackbarVisible = playAgain.value,
+//            snackbarMessage = "Game Over! Your final score is ${score.value}."
+//        )
+//
+//        if (playAgain.value) {
+//            Button(
+//                onClick = {
+//                    score.value = 0
+//                    questionCount.value = 0
+//                    playAgain.value = false
+//                    timeRemaining = 20_000L
+//                    timer.start()
+//                },
+//                modifier = Modifier.padding(top = 16.dp)
+//            ) {
+//                Text(text = "Play Again")
+//            }
+//        }
+//    }
+//}
