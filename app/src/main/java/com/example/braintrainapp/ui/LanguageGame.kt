@@ -170,14 +170,14 @@ fun LanguageGame(navController: NavController){
                                 .weight(0.2f)
                                 .padding(10.dp)
                         ) {
-                            Image(
-                                painter = painterResource(imageRes),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .weight(0.3f)
-                                    .fillMaxWidth(0.2f)
-                            )
+//                            Image(
+//                                painter = painterResource(imageRes),
+//                                contentDescription = null,
+//                                contentScale = ContentScale.Crop,
+//                                modifier = Modifier
+//                                    .weight(0.3f)
+//                                    .fillMaxWidth(0.2f)
+//                            )
 
                             Column(
                                 modifier = Modifier
@@ -187,13 +187,12 @@ fun LanguageGame(navController: NavController){
                                 Text(
                                     title,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 14.sp
+                                    fontSize = 16.sp
                                 )
                                 Text(
                                     description,
-                                    fontSize = 8.sp
+                                    fontSize = 14.sp
                                 )
-                            }
                         }
                     }
                 }

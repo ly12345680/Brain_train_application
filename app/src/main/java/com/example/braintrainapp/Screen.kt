@@ -12,6 +12,7 @@ import com.example.braintrainapp.ui.LanguageGame
 import com.example.braintrainapp.ui.MainMenu
 import com.example.braintrainapp.ui.MathGame
 import com.example.braintrainapp.ui.MemoryGame
+import com.example.braintrainapp.ui.attention.CatchFish
 import com.example.braintrainapp.ui.attention.FinDifferences
 import com.example.braintrainapp.ui.math.FindSum
 import com.example.braintrainapp.ui.math.SmallerExpressionGame
@@ -32,6 +33,7 @@ sealed class Screen(val route: String) {
     object FindDifferences : Screen("findDifferences")
     object FindSum : Screen("findSum")
     object SmallerExpression : Screen("smallerExpression")
+    object CatchFish : Screen("catchFish")
 
 }
 @Composable
@@ -74,6 +76,9 @@ fun MyApp() {
             }
             composable(Screen.SmallerExpression.route) {
                 SmallerExpressionGame()
+            }
+            composable(Screen.CatchFish.route) {
+                CatchFish()
             }
 
 
