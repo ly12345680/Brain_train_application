@@ -104,7 +104,6 @@ fun FindNewImage() {
             indexTest++
             selectedOne = false
         }
-
     }
 if (gameOver) {
 

@@ -1,64 +1,164 @@
 package com.example.braintrainapp.ui
 
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
 import com.example.braintrainapp.Screen
+import kotlin.math.absoluteValue
 
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MemoryGame(navController: NavController) {
+fun MemoryGame(
+    navController: NavController
+){
+    val state = rememberPagerState(0)
 
+    val slider = listOf(
+        SlideData(R.drawable.brain3, "Memory Games", "Pick Right Color posiontions", Screen.ColorMemory.route),
+        SlideData(R.drawable.resim, "Languages Games", "Find New Images", Screen.FindNewImage.route),
+        SlideData(R.drawable.resim, "Attention Games", "Find The Disappear Image", Screen.FindDifferences.route),
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(Color(0xFFFAE7F3)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val robotoFontFamily = Font(R.font.simonetta_regular, FontWeight.Bold)
+    ){
         Text(
-            text = "Memory Game",
-            style = TextStyle(
-
-                fontSize = 30.sp, // Increase the font size to make it bigger
-                color = Color.Black // Change the color to make it more highlighted
-            ),
-            modifier = Modifier.padding(vertical = 16.dp)
+            text = "CHỌN TRÒ CHƠI",
+            fontSize = 28.sp
         )
-        Button(onClick = { navController.navigate(Screen.ColorMemory.route) }) {
-            Text(text = "Color Memorization")
+        Spacer(modifier = Modifier.height(62.dp))
+        HorizontalPager(
+            pageCount = slider.size,
+            state = state,
+            contentPadding = PaddingValues(horizontal = 100.dp),
+            modifier = Modifier
+                .height(350.dp)
+        ){page ->
+            val (imageRes, title, description, route) = slider[page]
+            val onClick = {
+                navController.navigate(route)
+            }
+            Card(
+                shape = RoundedCornerShape(10.dp),
+                border = BorderStroke(
+                    5.dp, Color.White
+                ),
+                modifier = Modifier
+                    .graphicsLayer{
+                        val pageOffset = (state.currentPage - page).toFloat().absoluteValue
+                        lerp(
+                            start = 0.50f,
+                            stop = 1f,
+                            fraction = 1f- pageOffset.coerceIn(0f, 1f)
+                        )
+                            .also { scale ->
+                                scaleX = scale
+                                scaleY = scale
+                            }
+                        alpha = lerp(
+                            start = 0.5f,
+                            stop =1f,
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        )
+                    }
+                    .clickable(onClick = onClick)
+            ){
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(imageRes),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .weight(0.8f)
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        modifier = Modifier
+                            .weight(0.2f)
+                            .padding(10.dp)
+                    ){
+                        Image(
+                            painter = painterResource(imageRes),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .weight(0.3f)
+                                .fillMaxWidth(0.2f)
+                        )
+
+                        Column(
+                            modifier = Modifier
+                                .weight(0.7f)
+                                .padding(start = 8.dp)
+                        ) {
+                            Text(
+                                title,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp
+                            )
+                            Text(
+                                description,
+                                fontSize = 8.sp
+                            )
+                        }
+                    }
+                }
+            }
         }
-        Button(onClick = {  navController.navigate(Screen.FindNewImage.route)}) {
-            Text(text = "Finding a New Image")
-        }
-        Button(onClick = {}) {
-            Text(text = "What Is That Image")
-        }
+
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
-fun MemoryGamePreview() {
-    val navController = rememberNavController()
-    MemoryGame(navController = navController)
+fun MemoryGame(){
+    MainMenu(
+        navController = rememberNavController()
+    )
 }
+
