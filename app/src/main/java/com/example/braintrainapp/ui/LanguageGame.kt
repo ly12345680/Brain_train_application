@@ -51,8 +51,8 @@ fun LanguageGame(navController : NavController){
         Button(onClick = { navController.navigate(Screen.LetterWordHunt.route) }) {
             Text(text = "Letter Word Hunt")
         }
-        Button(onClick = { /*TODO*/ }) {
-            Text(text = "Word Chain")
+        Button(onClick = { navController.navigate(Screen.CompoundWords.route) }) {
+            Text(text = "Compound Word")
         }
     }
 }

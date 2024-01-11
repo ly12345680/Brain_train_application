@@ -163,7 +163,7 @@ fun GameScreen(
                 modifier = Modifier.padding(top = 16.dp)
             ) {
                 Text(
-                    text = "Time:  $remainingTime",
+                    text = "Time:  $remainingTime seconds",
                     style = TextStyle(fontSize = 16.sp),
                     textAlign = TextAlign.Center
                 )
@@ -229,6 +229,7 @@ fun WordInput(word: String, onWordChange: (String) -> Unit, onWordFound: (String
                     onWordFound(word)
                     onWordChange("")
                 },
+                colors = ButtonDefaults.buttonColors(Color.DarkGray),
                 modifier = Modifier.padding(top = 16.dp)
             ) {
                 Text(text = "Submit")
@@ -275,6 +276,7 @@ fun GameOverDialog(
                 )
                 Button (
                     onClick = onPlayAgainRequest,
+                    colors = ButtonDefaults.buttonColors(Color.DarkGray),
                     modifier = Modifier.padding(top = 16.dp)
                 ){
                     Text(text = "Play Again")
