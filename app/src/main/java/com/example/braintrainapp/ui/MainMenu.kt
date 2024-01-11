@@ -42,8 +42,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -53,13 +51,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.lerp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
 import com.example.braintrainapp.Screen
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import kotlin.math.absoluteValue
+import com.example.braintrainapp.ui.data.SlideData
+import com.example.braintrainapp.ui.data.UserData
 
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -251,16 +248,8 @@ fun userCompose(imageRes: Int, name: String){
         }
     }
 }
-data class SlideData(
-    val imageRes: Int,
-    val title: String,
-    val description: String,
-    val route: String
-)
-data class UserData(
-    val imageRes: Int,
-    val name: String
-)
+
+
 
 @Preview(showBackground = true)
 @Composable

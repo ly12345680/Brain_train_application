@@ -71,7 +71,7 @@
 //import androidx.compose.ui.draw.clip
 //import androidx.compose.ui.graphics.painter.Painter
 //import com.example.braintrainapp.R
-//import com.example.braintrainapp.ui.memory.ImageItem
+//import com.example.braintrainapp.ui.data.ImageItem
 //
 //
 //@OptIn(ExperimentalMaterial3Api::class)

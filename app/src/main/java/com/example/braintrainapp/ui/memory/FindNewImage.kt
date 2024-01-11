@@ -46,6 +46,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.input.pointer.pointerInput
+import com.example.braintrainapp.ui.data.ImageItem
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)

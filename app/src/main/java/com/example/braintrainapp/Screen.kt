@@ -13,6 +13,8 @@ import com.example.braintrainapp.ui.MainMenu
 import com.example.braintrainapp.ui.MathGame
 import com.example.braintrainapp.ui.MemoryGame
 import com.example.braintrainapp.ui.attention.FinDifferences
+import com.example.braintrainapp.ui.math.FindSum
+import com.example.braintrainapp.ui.math.SmallerExpressionGame
 import com.example.braintrainapp.ui.memory.ColorMemory
 import com.example.braintrainapp.ui.memory.FindNewImage
 import com.example.braintrainapp.ui.memory.PairImage
@@ -28,6 +30,9 @@ sealed class Screen(val route: String) {
     object ColorMemory : Screen("colorMemory")
     object FindNewImage : Screen("findNewImage")
     object FindDifferences : Screen("findDifferences")
+    object FindSum : Screen("findSum")
+    object SmallerExpression : Screen("smallerExpression")
+
 }
 @Composable
 fun MyApp() {
@@ -47,10 +52,10 @@ fun MyApp() {
                 AttentionGame(navController = navController)
             }
             composable(Screen.LanguageGame.route) {
-                LanguageGame()
+                LanguageGame(navController = navController)
             }
             composable(Screen.MathGame.route) {
-                MathGame()
+                MathGame(navController = navController)
             }
             composable(Screen.ColorMemory.route) {
                 ColorMemory()
@@ -63,6 +68,12 @@ fun MyApp() {
             }
             composable(Screen.FindDifferences.route) {
                 FinDifferences()
+            }
+            composable(Screen.FindSum.route) {
+                FindSum()
+            }
+            composable(Screen.SmallerExpression.route) {
+                SmallerExpressionGame()
             }
 
 

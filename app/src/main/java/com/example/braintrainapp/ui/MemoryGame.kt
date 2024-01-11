@@ -1,6 +1,7 @@
 package com.example.braintrainapp.ui
 
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -18,11 +19,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -36,128 +49,159 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
 import com.example.braintrainapp.Screen
-import kotlin.math.absoluteValue
+import com.example.braintrainapp.ui.data.SlideData
 
 
-@OptIn(ExperimentalFoundationApi::class)
+
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MemoryGame(
     navController: NavController
 ){
-    val state = rememberPagerState(0)
+    val pageState = rememberPagerState(0)
 
     val slider = listOf(
-        SlideData(R.drawable.brain3, "Memory Games", "Pick Right Color posiontions", Screen.ColorMemory.route),
-        SlideData(R.drawable.resim, "Languages Games", "Find New Images", Screen.FindNewImage.route),
-        SlideData(R.drawable.resim, "Attention Games", "Find The Disappear Image", Screen.FindDifferences.route),
+        SlideData(R.drawable.brain3, "Color Memory", "Pick Right Color positions", Screen.ColorMemory.route),
+        SlideData(R.drawable.resim, "Find New Image", "Find New Images", Screen.FindNewImage.route),
+        SlideData(R.drawable.resim, "Remember Image", "Find The Disappear Image", Screen.FindDifferences.route),
     )
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFFAE7F3)),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Text(
-            text = "CHỌN TRÒ CHƠI",
-            fontSize = 28.sp
-        )
-        Spacer(modifier = Modifier.height(62.dp))
-        HorizontalPager(
-            pageCount = slider.size,
-            state = state,
-            contentPadding = PaddingValues(horizontal = 100.dp),
-            modifier = Modifier
-                .height(350.dp)
-        ){page ->
-            val (imageRes, title, description, route) = slider[page]
-            val onClick = {
-                navController.navigate(route)
-            }
-            Card(
-                shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(
-                    5.dp, Color.White
-                ),
+    Scaffold(
+        topBar = {
+        },
+        bottomBar = {
+            BottomAppBar(
                 modifier = Modifier
-                    .graphicsLayer{
-                        val pageOffset = (state.currentPage - page).toFloat().absoluteValue
-                        lerp(
-                            start = 0.50f,
-                            stop = 1f,
-                            fraction = 1f- pageOffset.coerceIn(0f, 1f)
-                        )
-                            .also { scale ->
-                                scaleX = scale
-                                scaleY = scale
-                            }
-                        alpha = lerp(
-                            start = 0.5f,
-                            stop =1f,
-                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        )
-                    }
-                    .clickable(onClick = onClick)
-            ){
-                Column(
+                    .background(Color(221, 255, 204), RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp)),
+            ) {
+                Row(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.White),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .background(
+                            Color(221, 255, 204),
+                            RoundedCornerShape(
+                                topStart = 30.dp,
+                                topEnd = 30.dp,
+                                bottomStart = 30.dp,
+                                bottomEnd = 30.dp
+                            )
+                        ),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
-                        painter = painterResource(imageRes),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .weight(0.8f)
-                            .fillMaxWidth()
-                            .padding(8.dp)
+                    Icon(
+                        imageVector = Icons.Filled.MoreVert,
+                        contentDescription = "More",
+                        modifier = Modifier.clickable { /* Handle click here */ }
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Row(
+                    Icon(
+                        imageVector = Icons.Filled.Home,
+                        contentDescription = "Home",
+                        modifier = Modifier.clickable { /* Handle click here */ }
+                    )
+                    Icon(
+                        imageVector = Icons.Filled.Settings,
+                        contentDescription = "Setting",
+                        modifier = Modifier.clickable { /* Handle click here */ }
+                    )
+                }
+            }
+        }
+    ) {paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFFFAE7F3)),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Choose Games",
+                fontSize = 28.sp
+            )
+
+
+            Spacer(modifier = Modifier.height(62.dp))
+            HorizontalPager(
+                pageCount = slider.size,
+                state = pageState,
+                contentPadding = PaddingValues(horizontal = 30.dp),
+                modifier = Modifier
+                    .height(350.dp),
+
+                ) { page ->
+                val (imageRes, title, description, route) = slider[page]
+                val onClick = {
+                    navController.navigate(route)
+                }
+                val scale by animateFloatAsState(
+                    targetValue = if (pageState.currentPage == page) 1f else 0.85f,
+                    label = "Scale animation"
+                )
+                val alpha by animateFloatAsState(
+                    targetValue = if (pageState.currentPage == page)1f else 0.5f,
+                    label = "Alpha animation"
+                )
+                Card(
+                    shape = RoundedCornerShape(10.dp),
+                    border = BorderStroke(
+                        5.dp, Color.White
+                    ),
+                    modifier = Modifier
+                        .clickable(onClick = onClick)
+                        .scale(scale)
+                        .alpha(alpha)
+                ) {
+                    Column(
                         modifier = Modifier
-                            .weight(0.2f)
-                            .padding(10.dp)
-                    ){
+                            .fillMaxSize()
+                            .background(Color.White),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Image(
                             painter = painterResource(imageRes),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
-                                .weight(0.3f)
-                                .fillMaxWidth(0.2f)
+                                .weight(0.8f)
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                                .clip(RoundedCornerShape(12.dp))
                         )
-
-                        Column(
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Row(
                             modifier = Modifier
-                                .weight(0.7f)
-                                .padding(start = 8.dp)
+                                .weight(0.2f)
+                                .padding(10.dp)
                         ) {
-                            Text(
-                                title,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 14.sp
-                            )
-                            Text(
-                                description,
-                                fontSize = 8.sp
-                            )
+                            Column(
+                                modifier = Modifier
+                                    .weight(0.7f)
+                                    .padding(start = 8.dp)
+                            ) {
+                                Text(
+                                    title,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp
+                                )
+                                Text(
+                                    description,
+                                    fontSize = 14.sp
+                                )
+                            }
                         }
                     }
                 }
             }
         }
-
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
 fun MemoryGame(){
-    MainMenu(
+    MemoryGame(
         navController = rememberNavController()
     )
 }
