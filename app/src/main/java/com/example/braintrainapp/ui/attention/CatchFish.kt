@@ -161,6 +161,7 @@ fun CatchFish(){
 // Display the dialog when diaLogShow is true
     if (diaLogShow) {
         GameOverDialog(
+            score = score, // Pass the score to the dialog
             onPlayAgain = {
                 diaLogShow = false
                 // Reset game state and start again
@@ -175,7 +176,6 @@ fun CatchFish(){
             }
         )
     }
-
 
 
 
@@ -430,7 +430,7 @@ fun CatchFish(){
                         .size(60.dp)
                         .padding(5.dp),
                     initialOffset = fish3Offset,
-                    imageResourceId = R.drawable.f_1
+                    imageResourceId = R.drawable.f_2
                 )
             //Fish-4
                 AnimatedFish(
@@ -439,7 +439,7 @@ fun CatchFish(){
                         .size(60.dp)
                         .padding(5.dp),
                     initialOffset = fish4Offset,
-                    imageResourceId = R.drawable.f_1
+                    imageResourceId = R.drawable.f_3
                 )
             //fish-5
                 AnimatedFish(
@@ -457,7 +457,7 @@ fun CatchFish(){
                         .size(60.dp)
                         .padding(5.dp),
                     initialOffset = fish6Offset,
-                    imageResourceId = R.drawable.f_1
+                    imageResourceId = R.drawable.f_2
                 )
             //fish-7
                 AnimatedFish(
@@ -466,16 +466,41 @@ fun CatchFish(){
                         .size(60.dp)
                         .padding(5.dp),
                     initialOffset = fish7Offset,
-                    imageResourceId = R.drawable.f_1
+                    imageResourceId = R.drawable.f_3
                 )
+            //fish-8
+            AnimatedFish(
+                fishModifier = Modifier
+                    .offset(x = 200.dp, y = 600.dp)
+                    .size(60.dp)
+                    .padding(5.dp),
+                initialOffset = fish7Offset,
+                imageResourceId = R.drawable.f_3
+            )
+            //fish-9
+            AnimatedFish(
+                fishModifier = Modifier
+                    .offset(x = 200.dp, y = 550.dp)
+                    .size(60.dp)
+                    .padding(5.dp),
+                initialOffset = fish7Offset,
+                imageResourceId = R.drawable.f_3
+            )
+            AnimatedFish(
+                fishModifier = Modifier
+                    .offset(x = 200.dp, y = 550.dp)
+                    .size(60.dp)
+                    .padding(5.dp),
+                initialOffset = fish7Offset,
+                imageResourceId = R.drawable.f_3
+            )
             }
         }
     }
 }
 
-
 @Composable
-fun GameOverDialog(onPlayAgain: () -> Unit, onDismissRequest: () -> Unit) {
+fun GameOverDialog(score: Int, onPlayAgain: () -> Unit, onDismissRequest: () -> Unit) {
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
@@ -495,6 +520,12 @@ fun GameOverDialog(onPlayAgain: () -> Unit, onDismissRequest: () -> Unit) {
                     style = TextStyle(fontSize = 24.sp),
                     textAlign = TextAlign.Center
                 )
+                Text(
+                    text = "Your Score: $score", // Display the score
+                    style = TextStyle(fontSize = 20.sp),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
                 Button(
                     onClick = {
                         onPlayAgain()
@@ -507,7 +538,6 @@ fun GameOverDialog(onPlayAgain: () -> Unit, onDismissRequest: () -> Unit) {
         }
     }
 }
-
 
 @Preview
 @Composable
