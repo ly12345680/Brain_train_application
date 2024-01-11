@@ -124,10 +124,15 @@ fun CatchFish(){
     var fish5Offset by remember { mutableStateOf(Offset(0f, 0f)) }
     var fish6Offset by remember { mutableStateOf(Offset(0f, 0f)) }
     var fish7Offset by remember { mutableStateOf(Offset(0f, 0f)) }
+    var fish8Offset by remember { mutableStateOf(Offset(0f, 0f)) }
+    var fish9Offset by remember { mutableStateOf(Offset(0f, 0f)) }
+    var fish11Offset by remember { mutableStateOf(Offset(0f, 0f)) }
+    var fish10Offset by remember { mutableStateOf(Offset(0f, 0f)) }
+    var fish12Offset by remember { mutableStateOf(Offset(0f, 0f)) }
 
     //timeline
     var score by remember { mutableStateOf(0) }
-    var gameTime = 60
+    val gameTime = 60
     var remainingTime by remember {
         mutableStateOf(gameTime)
     }
@@ -183,7 +188,7 @@ fun CatchFish(){
     //GamePlay
 
     // Add this line to your CatchFish composable
-    var caughtFishList: MutableList<Offset> by remember { mutableStateOf(mutableListOf()) }
+    val caughtFishList: MutableList<Offset> by remember { mutableStateOf(mutableListOf()) }
 
     // Kích thước của hình chiếc thuyền
     val boatSize = 100.dp
@@ -226,14 +231,19 @@ fun CatchFish(){
     }
     // Kiểm tra khi người chơi nhấn vào hình chiếc thuyền
     if (isBoatClicked) {
-        val fishNearBoat1 = isFishNearBoat(fish1Offset, Offset(0f, 10f), boatSize)
-        val fishNearBoat2 = isFishNearBoat(fish2Offset, Offset(0f, 20f), boatSize)
-        val fishNearBoat3 = isFishNearBoat(fish3Offset, Offset(0f, 20f), boatSize)
-        val fishNearBoat4 = isFishNearBoat(fish4Offset, Offset(0f, 20f), boatSize)
-        val fishNearBoat5 = isFishNearBoat(fish5Offset, Offset(0f, 30f), boatSize)
-        val fishNearBoat6 = isFishNearBoat(fish6Offset, Offset(0f, 40f), boatSize)
-        val fishNearBoat7 = isFishNearBoat(fish7Offset, Offset(0f, 30f), boatSize)
-        if (fishNearBoat1 || fishNearBoat2 || fishNearBoat3 || fishNearBoat4 || fishNearBoat5 || fishNearBoat6 || fishNearBoat7) {
+        val fishNearBoat1 = isFishNearBoat(fish1Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat2 = isFishNearBoat(fish2Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat3 = isFishNearBoat(fish3Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat4 = isFishNearBoat(fish4Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat5 = isFishNearBoat(fish5Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat6 = isFishNearBoat(fish6Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat7 = isFishNearBoat(fish7Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat8 = isFishNearBoat(fish8Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat9 = isFishNearBoat(fish9Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat10 = isFishNearBoat(fish10Offset, Offset(0f, 30f), boatSize)
+        val fishNearBoat11 = isFishNearBoat(fish11Offset, Offset(0f, 30f), boatSize)
+        val fishNearBoat12 = isFishNearBoat(fish12Offset, Offset(0f, 30f), boatSize)
+        if (fishNearBoat1 || fishNearBoat2 || fishNearBoat3 || fishNearBoat4 || fishNearBoat5 || fishNearBoat6 || fishNearBoat7||fishNearBoat8||fishNearBoat9||fishNearBoat10||fishNearBoat11||fishNearBoat12) {
             if (!fishCaught) {
                 fishNearBoat = true
 
@@ -251,6 +261,11 @@ fun CatchFish(){
                     fishNearBoat5 -> fish5Offset = getRandomFishOffset()
                     fishNearBoat6 -> fish6Offset = getRandomFishOffset()
                     fishNearBoat7 -> fish7Offset = getRandomFishOffset()
+                    fishNearBoat8 -> fish1Offset = getRandomFishOffset()
+                    fishNearBoat9 -> fish1Offset = getRandomFishOffset()
+                    fishNearBoat10 -> fish1Offset = getRandomFishOffset()
+                    fishNearBoat11 -> fish1Offset = getRandomFishOffset()
+                    fishNearBoat12 -> fish1Offset = getRandomFishOffset()
                 }
             }
         } else {
@@ -474,8 +489,8 @@ fun CatchFish(){
                     .offset(x = 200.dp, y = 600.dp)
                     .size(60.dp)
                     .padding(5.dp),
-                initialOffset = fish7Offset,
-                imageResourceId = R.drawable.f_3
+                initialOffset = fish8Offset,
+                imageResourceId = R.drawable.f_1
             )
             //fish-9
             AnimatedFish(
@@ -483,15 +498,25 @@ fun CatchFish(){
                     .offset(x = 200.dp, y = 550.dp)
                     .size(60.dp)
                     .padding(5.dp),
-                initialOffset = fish7Offset,
+                initialOffset = fish9Offset,
                 imageResourceId = R.drawable.f_3
             )
+            //fish-10
             AnimatedFish(
                 fishModifier = Modifier
-                    .offset(x = 200.dp, y = 550.dp)
+                    .offset(x = 400.dp, y = 600.dp)
                     .size(60.dp)
                     .padding(5.dp),
-                initialOffset = fish7Offset,
+                initialOffset = fish10Offset,
+                imageResourceId = R.drawable.f_2
+            )
+            //fish-11
+            AnimatedFish(
+                fishModifier = Modifier
+                    .offset(x = 400.dp, y = 550.dp)
+                    .size(60.dp)
+                    .padding(5.dp),
+                initialOffset = fish11Offset,
                 imageResourceId = R.drawable.f_3
             )
             }
