@@ -52,14 +52,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
+import com.example.braintrainapp.Screen
 import com.example.braintrainapp.ui.data.ImageItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RemembersImages() {
+fun RemembersImages(navController: NavController) {
 
     val allImages = listOf<ImageItem>(
         ImageItem(1, R.drawable.fil),
@@ -215,7 +218,9 @@ fun RemembersImages() {
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { /* Handle menu click */ }
+                            .clickable {
+                                navController.navigate(Screen.MemoryGame.route)
+                            }
                     )
                 },
                 actions = {
@@ -466,19 +471,7 @@ fun getAImage(list: List<ImageItem>): ImageItem {
 @Preview
 @Composable
 fun RemembersImagesPreview() {
-    val allImages = listOf<ImageItem>(
-        ImageItem(1, R.drawable.fil),
-        ImageItem(2, R.drawable.kedi),
-        ImageItem(3, R.drawable.tavuk),
-        ImageItem(4, R.drawable.balik),
-        ImageItem(5, R.drawable.ari),
-        ImageItem(6, R.drawable.ordek),
-        ImageItem(7, R.drawable.camel),
-        ImageItem(8, R.drawable.coala),
-        ImageItem(9, R.drawable.fox),
-        ImageItem(10, R.drawable.lion),
-        ImageItem(11, R.drawable.monkey),
-        ImageItem(12, R.drawable.wolf),
+    RemembersImages(
+        navController = rememberNavController()
     )
-    RemembersImages()
 }

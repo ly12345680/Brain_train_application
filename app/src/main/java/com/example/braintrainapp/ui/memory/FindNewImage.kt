@@ -46,12 +46,15 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.braintrainapp.Screen
 import com.example.braintrainapp.ui.data.ImageItem
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FindNewImage() {
+fun FindNewImage(navController: NavController) {
     var selectedImage by remember {mutableStateOf<ImageItem?>(null) }
     var previousImages by remember { mutableStateOf<List<ImageItem>>(emptyList()) }
     var indexTest by remember { mutableStateOf(0) }
@@ -181,7 +184,9 @@ if (gameOver) {
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { /* Handle menu click */ }
+                            .clickable {
+                                navController.navigate(Screen.MemoryGame.route)
+                            }
                     )
                 },
                 actions = {
@@ -330,5 +335,7 @@ private fun MagicTickEffect() {
 @Preview(showBackground = true)
 @Composable
 fun FindNewImagePreview() {
-    FindNewImage()
+    FindNewImage(
+        navController = rememberNavController()
+    )
 }

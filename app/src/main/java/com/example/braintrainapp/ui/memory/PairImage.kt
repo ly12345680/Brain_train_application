@@ -52,6 +52,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.braintrainapp.Screen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -60,7 +63,7 @@ import kotlin.math.sqrt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PairImage() {
+fun PairImage(navController: NavController) {
 
     val timer = remember { MutableStateFlow(60) } // Timer starts with 60 seconds
     val baseImages: List<Int> = listOf(
@@ -213,7 +216,10 @@ fun PairImage() {
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { /* Handle menu click */ }
+                            .clickable {
+                                navController.navigate(Screen.AttentionGame.route)
+                                isStop = false
+                            }
                     )
                 },
                 actions = {
@@ -380,6 +386,6 @@ fun generateImagesForLevel(baseImages: List<Int>, level: Int): List<Int> {
 @Composable
 fun ImageGanmePreview() {
 //    CountdownTimer(6000, onTick = {}, onFinish = {})
-    PairImage()
+    PairImage(navController = rememberNavController())
 //    CountdownProgressBar(maxTime = 30)
 }

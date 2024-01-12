@@ -84,7 +84,9 @@ fun MemoryGame(
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { /* Handle menu click */ }
+                            .clickable {
+                                navController.navigate(Screen.MainMenu.route)
+                            }
                     )
                 },
                 actions = {

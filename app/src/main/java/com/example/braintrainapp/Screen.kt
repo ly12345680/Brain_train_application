@@ -62,13 +62,13 @@ fun MyApp() {
                 MathGame(navController = navController)
             }
             composable(Screen.ColorMemory.route) {
-                ColorMemory()
+                ColorMemory(navController = navController)
             }
             composable(Screen.FindNewImage.route) {
-                FindNewImage()
+                FindNewImage(navController = navController)
             }
             composable(Screen.PairImage.route) {
-                PairImage()
+                PairImage(navController = navController)
             }
             composable(Screen.FindDifferences.route) {
                 FinDifferences()
@@ -83,7 +83,7 @@ fun MyApp() {
                 CatchFish()
             }
             composable(Screen.RememberImages.route) {
-                RemembersImages()
+                RemembersImages(navController = navController)
             }
 
         }

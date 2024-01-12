@@ -46,7 +46,11 @@ import androidx.compose.ui.unit.sp
 import com.example.braintrainapp.R
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.braintrainapp.Screen
 
 fun checkWin(blueSquares: List<Boolean>, selectedSquares: List<Boolean>): Boolean {
     for((index, value) in blueSquares.withIndex()) {
@@ -99,7 +103,7 @@ fun ScoreAndLevel(score: Int) {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ColorMemory() {
+fun ColorMemory(navController: NavController) {
     var gridSize by remember { mutableStateOf(2) }
     val numberOfBlueSquares = gridSize
     val squares = List(gridSize * gridSize) { false }.toMutableStateList()
@@ -219,7 +223,9 @@ fun ColorMemory() {
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { /* Handle menu click */ }
+                            .clickable {
+                                navController.navigate(Screen.MemoryGame.route)
+                            }
                     )
                 },
                 actions = {
@@ -324,5 +330,7 @@ fun ColorMemory() {
 @Preview
 @Composable
 fun ColorMemoryPreview() {
-    ColorMemory()
+    ColorMemory(
+        navController = rememberNavController()
+    )
 }

@@ -126,7 +126,7 @@ Scaffold(
                 text = "Choose Games",
                 fontSize = 28.sp
             )
-            Text(text = pageState.currentPage.toString())
+
 
             Spacer(modifier = Modifier.height(62.dp))
             HorizontalPager(
@@ -182,15 +182,6 @@ Scaffold(
                                 .weight(0.2f)
                                 .padding(10.dp)
                         ) {
-                            Image(
-                                painter = painterResource(imageRes),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .weight(0.3f)
-                                    .fillMaxWidth(0.2f)
-                            )
-
                             Column(
                                 modifier = Modifier
                                     .weight(0.7f)
@@ -199,11 +190,11 @@ Scaffold(
                                 Text(
                                     title,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 14.sp
+                                    fontSize = 16.sp
                                 )
                                 Text(
                                     description,
-                                    fontSize = 8.sp
+                                    fontSize = 14.sp
                                 )
                             }
                         }
