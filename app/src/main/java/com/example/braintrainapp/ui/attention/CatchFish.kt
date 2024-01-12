@@ -240,9 +240,9 @@ fun CatchFish(){
         val fishNearBoat7 = isFishNearBoat(fish7Offset, Offset(0f, 0f), boatSize)
         val fishNearBoat8 = isFishNearBoat(fish8Offset, Offset(0f, 0f), boatSize)
         val fishNearBoat9 = isFishNearBoat(fish9Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat10 = isFishNearBoat(fish10Offset, Offset(0f, 30f), boatSize)
-        val fishNearBoat11 = isFishNearBoat(fish11Offset, Offset(0f, 30f), boatSize)
-        val fishNearBoat12 = isFishNearBoat(fish12Offset, Offset(0f, 30f), boatSize)
+        val fishNearBoat10 = isFishNearBoat(fish10Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat11 = isFishNearBoat(fish11Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat12 = isFishNearBoat(fish12Offset, Offset(0f, 0f), boatSize)
         if (fishNearBoat1 || fishNearBoat2 || fishNearBoat3 || fishNearBoat4 || fishNearBoat5 || fishNearBoat6 || fishNearBoat7||fishNearBoat8||fishNearBoat9||fishNearBoat10||fishNearBoat11||fishNearBoat12) {
             if (!fishCaught) {
                 fishNearBoat = true
@@ -269,6 +269,7 @@ fun CatchFish(){
                 }
             }
         } else {
+
             // No fish is near the boat
             fishNearBoat = false
             fishCaught = false
@@ -504,16 +505,16 @@ fun CatchFish(){
             //fish-10
             AnimatedFish(
                 fishModifier = Modifier
-                    .offset(x = 400.dp, y = 600.dp)
+                    .offset(x = 10.dp, y = 600.dp)
                     .size(60.dp)
                     .padding(5.dp),
                 initialOffset = fish10Offset,
-                imageResourceId = R.drawable.f_2
+                imageResourceId = R.drawable.f_3
             )
             //fish-11
             AnimatedFish(
                 fishModifier = Modifier
-                    .offset(x = 400.dp, y = 550.dp)
+                    .offset(x = 220.dp, y = 550.dp)
                     .size(60.dp)
                     .padding(5.dp),
                 initialOffset = fish11Offset,
