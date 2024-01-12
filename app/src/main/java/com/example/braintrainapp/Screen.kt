@@ -14,6 +14,9 @@ import com.example.braintrainapp.ui.MathGame
 import com.example.braintrainapp.ui.MemoryGame
 import com.example.braintrainapp.ui.attention.CatchFish
 import com.example.braintrainapp.ui.attention.FinDifferences
+import com.example.braintrainapp.ui.language_game.compound_word.CompoundNounGame
+import com.example.braintrainapp.ui.language_game.letter_word_hunt.LetterWordHunt
+import com.example.braintrainapp.ui.language_game.unscramble_words.UnscrambleWordsGame
 import com.example.braintrainapp.ui.math.FindSum
 import com.example.braintrainapp.ui.math.SmallerExpressionGame
 import com.example.braintrainapp.ui.memory.ColorMemory
@@ -36,6 +39,9 @@ sealed class Screen(val route: String) {
     object SmallerExpression : Screen("smallerExpression")
     object CatchFish : Screen("catchFish")
     object RememberImages : Screen("rememberImages")
+    object UnscrambleWordsGame : Screen("unscramblewordsgame")
+    object LetterWordHunt : Screen("letterwordhunt")
+    object CompoundWords : Screen("compoundwords")
 
 }
 @Composable
@@ -85,7 +91,15 @@ fun MyApp() {
             composable(Screen.RememberImages.route) {
                 RemembersImages(navController = navController)
             }
-
+            composable(Screen.UnscrambleWordsGame.route) {
+                UnscrambleWordsGame()
+            }
+            composable(Screen.LetterWordHunt.route) {
+                LetterWordHunt()
+            }
+            composable(Screen.CompoundWords.route) {
+                CompoundNounGame()
+            }
         }
     }
 }
