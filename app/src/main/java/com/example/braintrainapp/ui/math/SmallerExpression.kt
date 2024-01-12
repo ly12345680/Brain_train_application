@@ -38,6 +38,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.braintrainapp.Screen
+
 data class Expression(val expression: String, val value: Int)
 
 fun generateExpression(level: Int): Expression {
@@ -57,7 +61,7 @@ fun generateExpression(level: Int): Expression {
 
 
 @Composable
-fun SmallerExpressionGame() {
+fun SmallerExpressionGame(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
     var level by remember { mutableStateOf(1) }
     var score by remember { mutableStateOf(0) }
@@ -126,7 +130,9 @@ fun SmallerExpressionGame() {
                             contentDescription = "Back",
                             modifier = Modifier
 
-                                .clickable { /* Handle menu click */ }
+                                .clickable {
+                                    navController.popBackStack()
+                                }
                         )
                         Icon(
                             imageVector = Icons.Filled.Info,
@@ -323,5 +329,5 @@ fun checkOver (currentLevel: Int, maxLevel: Int): Boolean {
 @Preview
 @Composable
 fun PreviewSmallerExpressionGame() {
-    SmallerExpressionGame()
+    SmallerExpressionGame(navController = rememberNavController())
 }

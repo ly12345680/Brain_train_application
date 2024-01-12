@@ -77,7 +77,7 @@ fun LanguageGame(navController: NavController){
                         modifier = Modifier
                             .padding(12.dp)
                             .clickable {
-                                navController.navigate(Screen.MainMenu.route)
+                                navController.popBackStack()
                             }
                     )
                 },
@@ -145,7 +145,7 @@ fun LanguageGame(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "language Games",
+                text = "Choose Games",
                 fontSize = 28.sp
             )
 

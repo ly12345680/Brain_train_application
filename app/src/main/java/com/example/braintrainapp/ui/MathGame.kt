@@ -76,7 +76,7 @@ fun MathGame(navController: NavController){
                         modifier = Modifier
                             .padding(12.dp)
                             .clickable {
-                                navController.navigate(Screen.MainMenu.route)
+                                navController.popBackStack()
                             }
                     )
                 },

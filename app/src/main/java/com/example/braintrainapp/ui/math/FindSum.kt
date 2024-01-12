@@ -41,14 +41,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
+import com.example.braintrainapp.Screen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 
 @Composable
-fun FindSum() {
+fun FindSum(navController: NavController) {
     val maxElement by remember { mutableStateOf(6) }
     var condition by remember { mutableStateOf(10) }
     val wallpaperImage = painterResource(id = R.drawable.math_wallpaper)
@@ -122,14 +125,18 @@ fun FindSum() {
                             contentDescription = "Back",
                             modifier = Modifier
 
-                                .clickable { /* Handle menu click */ }
+                                .clickable {
+                                    navController.popBackStack()
+                                }
                         )
                         Icon(
                             imageVector = Icons.Filled.Info,
                             contentDescription = "Guidelines",
                             modifier = Modifier
                                 .padding(end = 12.dp)
-                                .clickable { /* Handle guidelines click */ }
+                                .clickable {
+
+                                }
                         )
                     }
 
@@ -416,6 +423,6 @@ fun checkGameOver(numberOfQuestion: Int, maxNumberOfQuestion: Int): Boolean {
 @Preview
 @Composable
 fun PreviewFindSum() {
-    FindSum()
+    FindSum(navController = rememberNavController())
 //    CardView(number = 1, isOpen = false, onClick = {})
 }

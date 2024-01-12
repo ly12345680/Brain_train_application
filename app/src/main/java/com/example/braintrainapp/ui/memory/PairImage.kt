@@ -217,8 +217,8 @@ fun PairImage(navController: NavController) {
                         modifier = Modifier
                             .padding(12.dp)
                             .clickable {
-                                navController.navigate(Screen.AttentionGame.route)
                                 isStop = false
+                                navController.popBackStack()
                             }
                     )
                 },

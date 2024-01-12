@@ -224,7 +224,7 @@ fun ColorMemory(navController: NavController) {
                         modifier = Modifier
                             .padding(12.dp)
                             .clickable {
-                                navController.navigate(Screen.MemoryGame.route)
+                                navController.popBackStack()
                             }
                     )
                 },

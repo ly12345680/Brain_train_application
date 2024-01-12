@@ -71,16 +71,16 @@ fun MyApp() {
                 PairImage(navController = navController)
             }
             composable(Screen.FindDifferences.route) {
-                FinDifferences()
+                FinDifferences(navController = navController)
             }
             composable(Screen.FindSum.route) {
-                FindSum()
+                FindSum(navController = navController)
             }
             composable(Screen.SmallerExpression.route) {
-                SmallerExpressionGame()
+                SmallerExpressionGame(navController = navController)
             }
             composable(Screen.CatchFish.route) {
-                CatchFish()
+                CatchFish(navController = navController)
             }
             composable(Screen.RememberImages.route) {
                 RemembersImages(navController = navController)

@@ -48,6 +48,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
 import com.example.braintrainapp.ui.memory.ScoreAndLevel
 import kotlinx.coroutines.delay
@@ -78,7 +80,7 @@ class FindDifferencesState {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FinDifferences(){
+fun FinDifferences(navController: NavController){
     val state = remember { FindDifferencesState() }
     val dialogShown = remember { mutableStateOf(false) }
     var level = remember { mutableStateOf(1) }
@@ -93,7 +95,9 @@ fun FinDifferences(){
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { /* Handle menu click */ }
+                            .clickable {
+                                navController.popBackStack()
+                            }
                     )
                 },
                 actions = {
@@ -226,5 +230,5 @@ fun WinDialog(onDismiss: () -> Unit) {
 @Preview
 @Composable
 fun review(){
-    FinDifferences()
+    FinDifferences(navController = rememberNavController())
 }
