@@ -37,13 +37,16 @@ import com.example.braintrainapp.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.navigation.NavController
@@ -51,7 +54,47 @@ import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.Screen
 import com.example.braintrainapp.ui.data.ImageItem
 import kotlinx.coroutines.delay
+@Composable
+fun SearchDialog3(onDismiss: () -> Unit, onSearch: () -> Unit) {
+//    var playerName by remember { mutableStateOf(TextFieldValue()) }
 
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Game Instructions")
+        },
+        text = {
+            Column {
+                Text("Step 1: The player is randomly selected 1 of these 3 cards and must memorize the object in that card")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 2: In each round, the number of cards increases by 1 -> the player must choose 1 card with a different shape not previously selected .")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("In each level: The number of items will increase by 1 through each round")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("The level will end when you select an item you selected in the previous rounds of the level")
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onSearch()
+                    onDismiss()
+                }
+            ) {
+                Text("Got it!")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Text("Cancel")
+            }
+        }
+    )
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FindNewImage(navController: NavController) {
@@ -173,7 +216,7 @@ if (gameOver) {
             }
         )
 }
-
+    var isDialogVisible by remember { mutableStateOf(false) }
     Scaffold (
         topBar = {
             TopAppBar(
@@ -195,19 +238,29 @@ if (gameOver) {
                         modifier = Modifier.padding(end = 16.dp),
                         style = TextStyle(fontSize = 20.sp, color = Color.Blue, fontWeight = FontWeight.Bold),
                     )
-                    Icon(
-                        imageVector = Icons.Filled.Info,
-                        contentDescription = "Guidelines",
-                        modifier = Modifier
-                            .padding(end = 12.dp)
-                            .clickable { /* Handle guidelines click */ }
-                    )
-
+                    IconButton(onClick = {
+                        isDialogVisible = true
+                    }) {
+                        Icon(Icons.Filled.Info, contentDescription = "Search")
+                    }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = Color(204, 255, 255),
                 )
             )
+            // Kiểm tra nếu Dialog nên hiển thị
+            if (isDialogVisible) {
+                SearchDialog3(
+                    onDismiss = {
+                        // Khi nhấn Cancel, ẩn Dialog
+                        isDialogVisible = false
+                    },
+                    onSearch = {
+                        // Xử lý hành động tìm kiếm, sau đó ẩn Dialog
+                        isDialogVisible = false
+                    }
+                )
+            }
         }
     ) {paddingValues ->
 

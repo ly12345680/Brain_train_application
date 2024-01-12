@@ -48,8 +48,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
 import com.example.braintrainapp.ui.memory.ScoreAndLevel
 import kotlinx.coroutines.delay
@@ -80,11 +78,12 @@ class FindDifferencesState {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FinDifferences(navController: NavController){
+fun FinDifferences(){
     val state = remember { FindDifferencesState() }
     val dialogShown = remember { mutableStateOf(false) }
     var level = remember { mutableStateOf(1) }
     var timeLeft by remember { mutableStateOf(5)}
+    var isDialogVisible by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -95,17 +94,17 @@ fun FinDifferences(navController: NavController){
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable {
-                                navController.popBackStack()
-                            }
+                            .clickable { /* Handle menu click */ }
                     )
                 },
                 actions = {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(Icons.Default.MailOutline,"")
                     }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Default.Search,"")
+                    IconButton(onClick = {
+                        isDialogVisible = true
+                    }) {
+                        Icon(Icons.Default.Search, contentDescription = "Search")
                     }
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(Icons.Default.Settings,"")
@@ -114,8 +113,20 @@ fun FinDifferences(navController: NavController){
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = Color(204, 255, 255),
                 )
-
             )
+            // Kiểm tra nếu Dialog nên hiển thị
+            if (isDialogVisible) {
+                SearchDialog1(
+                    onDismiss = {
+                        // Khi nhấn Cancel, ẩn Dialog
+                        isDialogVisible = false
+                    },
+                    onSearch = {
+                        // Xử lý hành động tìm kiếm, sau đó ẩn Dialog
+                        isDialogVisible = false
+                    }
+                )
+            }
         }
     ) { paddingValues ->
         Column(
@@ -124,7 +135,7 @@ fun FinDifferences(navController: NavController){
                 .padding(paddingValues = paddingValues)
                 .background(Color(230, 255, 255)),
             horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -214,7 +225,47 @@ fun FinDifferences(navController: NavController){
         }
     }
 }
+@Composable
+fun SearchDialog1(onDismiss: () -> Unit, onSearch: () -> Unit) {
+//    var playerName by remember { mutableStateOf(TextFieldValue()) }
 
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Game Instructions")
+        },
+        text = {
+            Column {
+                Text("Step 1: The system will give the player a photo with similarities and a single difference.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 2: When the player predicts the difference in the photo, touch the difference in the screen to go to a new level.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 3: Complete all challenges to win.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("(note: the game does not count points and does not count the number of taps, try to complete the game.)")
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onSearch()
+                    onDismiss()
+                }
+            ) {
+                Text("Got it!")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Text("Cancel")
+            }
+        }
+    )
+}
 @Composable
 fun WinDialog(onDismiss: () -> Unit) {
     AlertDialog(
@@ -230,5 +281,5 @@ fun WinDialog(onDismiss: () -> Unit) {
 @Preview
 @Composable
 fun review(){
-    FinDifferences(navController = rememberNavController())
+    FinDifferences()
 }
