@@ -54,6 +54,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -160,7 +162,7 @@ fun SearchDialog(onDismiss: () -> Unit, onSearch: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CatchFish(){
+fun CatchFish(navController: NavController){
     var fish1Offset by remember { mutableStateOf(Offset(0f, 0f)) }
     var fish2Offset by remember { mutableStateOf(Offset(0f, 0f)) }
     var fish3Offset by remember { mutableStateOf(Offset(0f, 0f)) }
@@ -628,5 +630,5 @@ fun GameOverDialog(score: Int, onPlayAgain: () -> Unit, onDismissRequest: () -> 
 @Preview
 @Composable
 fun reviewCatchFish(){
-    CatchFish()
+    CatchFish(navController = rememberNavController())
 }
