@@ -19,6 +19,7 @@ import com.example.braintrainapp.ui.math.SmallerExpressionGame
 import com.example.braintrainapp.ui.memory.ColorMemory
 import com.example.braintrainapp.ui.memory.FindNewImage
 import com.example.braintrainapp.ui.memory.PairImage
+import com.example.braintrainapp.ui.memory.RemembersImages
 
 
 sealed class Screen(val route: String) {
@@ -34,6 +35,7 @@ sealed class Screen(val route: String) {
     object FindSum : Screen("findSum")
     object SmallerExpression : Screen("smallerExpression")
     object CatchFish : Screen("catchFish")
+    object RememberImages : Screen("rememberImages")
 
 }
 @Composable
@@ -80,7 +82,9 @@ fun MyApp() {
             composable(Screen.CatchFish.route) {
                 CatchFish()
             }
-
+            composable(Screen.RememberImages.route) {
+                RemembersImages()
+            }
 
         }
     }

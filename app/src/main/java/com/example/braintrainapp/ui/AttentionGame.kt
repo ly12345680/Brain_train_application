@@ -109,7 +109,7 @@ fun AttentionGame(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Choose Games",
+                text = "Attention Games",
                 fontSize = 28.sp
             )
             Text(text = pageState.currentPage.toString())

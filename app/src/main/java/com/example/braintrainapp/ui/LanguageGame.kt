@@ -111,7 +111,7 @@ fun LanguageGame(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Choose Games",
+                text = "language Games",
                 fontSize = 28.sp
             )
             Text(text = pageState.currentPage.toString())
@@ -199,7 +199,7 @@ fun LanguageGame(navController: NavController){
             }
         }
     }
-}
+}}
 
 @Preview(showBackground = true)
 @Composable

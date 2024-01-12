@@ -19,6 +19,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
@@ -28,6 +29,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -61,6 +64,33 @@ fun MathGame(navController: NavController){
     )
     Scaffold(
         topBar = {
+            TopAppBar(
+                title = { Text("Math Games",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                ) },
+                navigationIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Menu",
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .clickable { /* Handle menu click */ }
+                    )
+                },
+                actions = {
+                    Icon(
+                        imageVector = Icons.Filled.Settings,
+                        contentDescription = "Setting",
+                        modifier = Modifier
+                            .padding(end = 12.dp)
+                            .clickable { /* Handle guidelines click */ }
+                    )
+                },
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                    containerColor = Color(204, 255, 255),
+                ),
+            )
         },
         bottomBar = {
             BottomAppBar(
@@ -113,7 +143,7 @@ fun MathGame(navController: NavController){
                 text = "Choose Games",
                 fontSize = 28.sp
             )
-            Text(text = pageState.currentPage.toString())
+
 
             Spacer(modifier = Modifier.height(62.dp))
             HorizontalPager(

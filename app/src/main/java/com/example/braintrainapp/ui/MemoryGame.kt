@@ -20,7 +20,9 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
@@ -29,6 +31,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,6 +44,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -63,10 +69,37 @@ fun MemoryGame(
     val slider = listOf(
         SlideData(R.drawable.brain3, "Color Memory", "Pick Right Color positions", Screen.ColorMemory.route),
         SlideData(R.drawable.resim, "Find New Image", "Find New Images", Screen.FindNewImage.route),
-        SlideData(R.drawable.resim, "Remember Image", "Find The Disappear Image", Screen.FindDifferences.route),
+        SlideData(R.drawable.resim, "Remember Image", "Find The Disappear Image", Screen.RememberImages.route),
     )
     Scaffold(
         topBar = {
+            TopAppBar(
+                title = { Text("Memory Games",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                ) },
+                navigationIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Menu",
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .clickable { /* Handle menu click */ }
+                    )
+                },
+                actions = {
+                    Icon(
+                        imageVector = Icons.Filled.Settings,
+                        contentDescription = "Setting",
+                        modifier = Modifier
+                            .padding(end = 12.dp)
+                            .clickable { /* Handle guidelines click */ }
+                    )
+                },
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                    containerColor = Color(204, 255, 255),
+                ),
+            )
         },
         bottomBar = {
             BottomAppBar(
@@ -119,8 +152,6 @@ fun MemoryGame(
                 text = "Choose Games",
                 fontSize = 28.sp
             )
-
-
             Spacer(modifier = Modifier.height(62.dp))
             HorizontalPager(
                 pageCount = slider.size,
