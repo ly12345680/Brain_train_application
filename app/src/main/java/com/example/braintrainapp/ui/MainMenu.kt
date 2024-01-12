@@ -104,7 +104,9 @@ Scaffold(
                 Icon(
                     imageVector = Icons.Filled.Home,
                     contentDescription = "Home",
-                    modifier = Modifier.clickable { /* Handle click here */ }
+                    modifier = Modifier.clickable {
+                        navController.navigate(Screen.MainMenu.route)
+                    }
                 )
                 Icon(
                     imageVector = Icons.Filled.Settings,
