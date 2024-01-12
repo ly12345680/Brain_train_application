@@ -28,6 +28,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -59,6 +60,45 @@ import com.example.braintrainapp.Screen
 import com.example.braintrainapp.ui.data.ImageItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+@Composable
+fun SearchDialog5(onDismiss: () -> Unit, onSearch: () -> Unit) {
+//    var playerName by remember { mutableStateOf(TextFieldValue()) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Game Instructions")
+        },
+        text = {
+            Column {
+                Text("Step 1: The game will provide different pictures.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 2: The player's task is to find the object on the card with a question mark .")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("GoodLuck and try get higher score!!!")
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onSearch()
+                    onDismiss()
+                }
+            ) {
+                Text("Got it!")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Text("Cancel")
+            }
+        }
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -208,6 +248,7 @@ fun RemembersImages(navController: NavController) {
             )
         }
     }
+    var isDialogVisible by remember { mutableStateOf(false) }
     Scaffold (
         topBar = {
             TopAppBar(
@@ -229,19 +270,29 @@ fun RemembersImages(navController: NavController) {
                         modifier = Modifier.padding(end = 16.dp),
                         style = TextStyle(fontSize = 20.sp, color = Color.Blue, fontWeight = FontWeight.Bold),
                     )
-                    Icon(
-                        imageVector = Icons.Filled.Info,
-                        contentDescription = "Guidelines",
-                        modifier = Modifier
-                            .padding(end = 12.dp)
-                            .clickable { /* Handle guidelines click */ }
-                    )
-
+                    IconButton(onClick = {
+                        isDialogVisible = true
+                    }) {
+                        Icon(Icons.Filled.Info, contentDescription = "Search")
+                    }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = Color(204, 255, 255),
-                )
+                ),
             )
+            // Kiểm tra nếu Dialog nên hiển thị
+            if (isDialogVisible) {
+                SearchDialog5(
+                    onDismiss = {
+                        // Khi nhấn Cancel, ẩn Dialog
+                        isDialogVisible = false
+                    },
+                    onSearch = {
+                        // Xử lý hành động tìm kiếm, sau đó ẩn Dialog
+                        isDialogVisible = false
+                    }
+                )
+            }
         }
     ) {paddingValues->
         if(!isTick && !isX) {
