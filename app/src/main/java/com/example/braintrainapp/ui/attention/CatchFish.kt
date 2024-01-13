@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -54,7 +57,6 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
-import com.example.braintrainapp.Screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -114,6 +116,47 @@ fun AnimatedFish(
             .offset(animatableX.value.dp, animatableY.value.dp)
             .size(60.dp)
             .padding(5.dp)
+    )
+}
+@Composable
+fun SearchDialog(onDismiss: () -> Unit, onSearch: () -> Unit) {
+//    var playerName by remember { mutableStateOf(TextFieldValue()) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Game Instructions")
+        },
+        text = {
+            Column {
+                Text("Step 1: Players must ensure that boats at sea catch as many fish as possible.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 2: When the player predicts the fish will move to the boat, touch the screen to catch the fish and get points.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 3: For each fish caught, you will receive 1,000 points.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("In 2 minutes, try to catch as many fish and accumulate the most points..")
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onSearch()
+                    onDismiss()
+                }
+            ) {
+                Text("Got it!")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Text("Cancel")
+            }
+        }
     )
 }
 
@@ -243,9 +286,9 @@ fun CatchFish(navController: NavController){
         val fishNearBoat7 = isFishNearBoat(fish7Offset, Offset(0f, 0f), boatSize)
         val fishNearBoat8 = isFishNearBoat(fish8Offset, Offset(0f, 0f), boatSize)
         val fishNearBoat9 = isFishNearBoat(fish9Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat10 = isFishNearBoat(fish10Offset, Offset(0f, 30f), boatSize)
-        val fishNearBoat11 = isFishNearBoat(fish11Offset, Offset(0f, 30f), boatSize)
-        val fishNearBoat12 = isFishNearBoat(fish12Offset, Offset(0f, 30f), boatSize)
+        val fishNearBoat10 = isFishNearBoat(fish10Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat11 = isFishNearBoat(fish11Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat12 = isFishNearBoat(fish12Offset, Offset(0f, 0f), boatSize)
         if (fishNearBoat1 || fishNearBoat2 || fishNearBoat3 || fishNearBoat4 || fishNearBoat5 || fishNearBoat6 || fishNearBoat7||fishNearBoat8||fishNearBoat9||fishNearBoat10||fishNearBoat11||fishNearBoat12) {
             if (!fishCaught) {
                 fishNearBoat = true
@@ -272,6 +315,7 @@ fun CatchFish(navController: NavController){
                 }
             }
         } else {
+
             // No fish is near the boat
             fishNearBoat = false
             fishCaught = false
@@ -279,6 +323,7 @@ fun CatchFish(navController: NavController){
         isBoatClicked = false
     }
 
+    var isDialogVisible by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -290,17 +335,17 @@ fun CatchFish(navController: NavController){
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable {
-                                navController.popBackStack()
-                            }
+                            .clickable { /* Handle menu click */ }
                     )
                 },
                 actions = {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(Icons.Default.MailOutline,"")
                     }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Default.Search,"")
+                    IconButton(onClick = {
+                        isDialogVisible = true
+                    }) {
+                        Icon(Icons.Default.Search, contentDescription = "Search")
                     }
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(Icons.Default.Settings,"")
@@ -310,122 +355,135 @@ fun CatchFish(navController: NavController){
                     containerColor = Color(204, 255, 255),
                 )
             )
+            // Kiểm tra nếu Dialog nên hiển thị
+            if (isDialogVisible) {
+                SearchDialog(
+                    onDismiss = {
+                        // Khi nhấn Cancel, ẩn Dialog
+                        isDialogVisible = false
+                    },
+                    onSearch = {
+                        // Xử lý hành động tìm kiếm, sau đó ẩn Dialog
+                        isDialogVisible = false
+                    }
+                )
+            }
         }
     ) {paddingValues ->
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(paddingValues = paddingValues)
-            .background(Color(230, 255, 255)),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
         Column(
             modifier = Modifier
+                .fillMaxSize()
                 .fillMaxWidth()
-                .height(80.dp)
-                .background(Color(236, 135, 14)),
-            verticalArrangement = Arrangement.Center
+                .fillMaxHeight()
+                .padding(paddingValues = paddingValues)
+                .background(Color(230, 255, 255)),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(80.dp)
                     .background(Color(236, 135, 14)),
-                horizontalAlignment = Alignment.CenterHorizontally
+                verticalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = "Time:$remainingTime",
-                    style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black),
-                )
-                Text(
-                    text = "Score=$score ",
-                            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black),
-                )
-            }
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .fillMaxSize()
-        ){
-            Box(
-                modifier = Modifier
-                    .offset(x = 80.dp, y = 200.dp)
-                    .size(boatSize)
-                    .border(
-                        width = 2.dp,
-                        color = Color.Blue
-                    )
-                    .clickable {
-                        if (!isBoatClicked) {
-                            isBoatClicked = true
-                        }
-                    }
-
-            ){
-                Image(
-                    painter = painterResource(id = R.drawable.boat),
-                    contentDescription = "boat_1",
+                Column(
                     modifier = Modifier
-                        .size(80.dp)
-                        .padding(10.dp)
-                        .align(Alignment.Center)
-                )
+                        .fillMaxWidth()
+                        .background(Color(236, 135, 14)),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Time:$remainingTime",
+                        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black),
+                    )
+                    Text(
+                        text = "Score=$score ",
+                        style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black),
+                    )
+                }
             }
             Box(
                 modifier = Modifier
-                    .offset(x = 70.dp, y = 600.dp)
-                    .size(boatSize)
-                    .border(
-                        width = 2.dp,
-                        color = Color.Blue
-                    )
-                    .clickable {
-                        if (!isBoatClicked) {
-                            isBoatClicked = true
-                        }
-                    }
-
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .fillMaxSize()
             ){
-                Image(
-                    painter = painterResource(id = R.drawable.boat),
-                    contentDescription = "boat_2",
+                Box(
                     modifier = Modifier
-                        .size(80.dp)
-                        .padding(10.dp)
-                        .align(Alignment.Center)
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .offset(x = 290.dp, y = 400.dp)
-                    .size(boatSize)
-                    .border(
-                        width = 2.dp,
-                        color = Color.Blue
-                    )
-                    .clickable {
-                        if (!isBoatClicked) {
-                            isBoatClicked = true
+                        .offset(x = 80.dp, y = 200.dp)
+                        .size(boatSize)
+                        .border(
+                            width = 2.dp,
+                            color = Color.Blue
+                        )
+                        .clickable {
+                            if (!isBoatClicked) {
+                                isBoatClicked = true
+                            }
                         }
-                    }
 
-            ){
-                Image(
-                    painter = painterResource(id = R.drawable.boat),
-                    contentDescription = "boat_3",
+                ){
+                    Image(
+                        painter = painterResource(id = R.drawable.boat),
+                        contentDescription = "boat_1",
+                        modifier = Modifier
+                            .size(80.dp)
+                            .padding(10.dp)
+                            .align(Alignment.Center)
+                    )
+                }
+                Box(
                     modifier = Modifier
-                        .size(80.dp)
-                        .padding(10.dp)
-                        .align(Alignment.Center)
-                )
-            }
+                        .offset(x = 70.dp, y = 600.dp)
+                        .size(boatSize)
+                        .border(
+                            width = 2.dp,
+                            color = Color.Blue
+                        )
+                        .clickable {
+                            if (!isBoatClicked) {
+                                isBoatClicked = true
+                            }
+                        }
+
+                ){
+                    Image(
+                        painter = painterResource(id = R.drawable.boat),
+                        contentDescription = "boat_2",
+                        modifier = Modifier
+                            .size(80.dp)
+                            .padding(10.dp)
+                            .align(Alignment.Center)
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .offset(x = 290.dp, y = 400.dp)
+                        .size(boatSize)
+                        .border(
+                            width = 2.dp,
+                            color = Color.Blue
+                        )
+                        .clickable {
+                            if (!isBoatClicked) {
+                                isBoatClicked = true
+                            }
+                        }
+
+                ){
+                    Image(
+                        painter = painterResource(id = R.drawable.boat),
+                        contentDescription = "boat_3",
+                        modifier = Modifier
+                            .size(80.dp)
+                            .padding(10.dp)
+                            .align(Alignment.Center)
+                    )
+                }
 
 
 
-            //Fish-1
+                //Fish-1
                 AnimatedFish(
                     fishModifier = Modifier
                         .offset(x = 100.dp, y = 30.dp)
@@ -434,7 +492,7 @@ fun CatchFish(navController: NavController){
                     initialOffset = fish1Offset,
                     imageResourceId = R.drawable.f_1
                 )
-            //Fish-2
+                //Fish-2
                 AnimatedFish(
                     fishModifier = Modifier
                         .offset(x = 10.dp, y = 400.dp)
@@ -443,7 +501,7 @@ fun CatchFish(navController: NavController){
                     initialOffset = fish2Offset,
                     imageResourceId = R.drawable.f_1
                 )
-            //Fish-3
+                //Fish-3
                 AnimatedFish(
                     fishModifier = Modifier
                         .offset(x = 20.dp, y = 30.dp)
@@ -452,7 +510,7 @@ fun CatchFish(navController: NavController){
                     initialOffset = fish3Offset,
                     imageResourceId = R.drawable.f_2
                 )
-            //Fish-4
+                //Fish-4
                 AnimatedFish(
                     fishModifier = Modifier
                         .offset(x = 20.dp, y = 310.dp)
@@ -461,7 +519,7 @@ fun CatchFish(navController: NavController){
                     initialOffset = fish4Offset,
                     imageResourceId = R.drawable.f_3
                 )
-            //fish-5
+                //fish-5
                 AnimatedFish(
                     fishModifier = Modifier
                         .offset(x = 100.dp, y = 400.dp)
@@ -470,7 +528,7 @@ fun CatchFish(navController: NavController){
                     initialOffset = fish5Offset,
                     imageResourceId = R.drawable.f_1
                 )
-            //fish-6
+                //fish-6
                 AnimatedFish(
                     fishModifier = Modifier
                         .offset(x = 200.dp, y = 130.dp)
@@ -479,7 +537,7 @@ fun CatchFish(navController: NavController){
                     initialOffset = fish6Offset,
                     imageResourceId = R.drawable.f_2
                 )
-            //fish-7
+                //fish-7
                 AnimatedFish(
                     fishModifier = Modifier
                         .offset(x = 200.dp, y = 200.dp)
@@ -488,42 +546,42 @@ fun CatchFish(navController: NavController){
                     initialOffset = fish7Offset,
                     imageResourceId = R.drawable.f_3
                 )
-            //fish-8
-            AnimatedFish(
-                fishModifier = Modifier
-                    .offset(x = 200.dp, y = 600.dp)
-                    .size(60.dp)
-                    .padding(5.dp),
-                initialOffset = fish8Offset,
-                imageResourceId = R.drawable.f_1
-            )
-            //fish-9
-            AnimatedFish(
-                fishModifier = Modifier
-                    .offset(x = 200.dp, y = 550.dp)
-                    .size(60.dp)
-                    .padding(5.dp),
-                initialOffset = fish9Offset,
-                imageResourceId = R.drawable.f_3
-            )
-            //fish-10
-            AnimatedFish(
-                fishModifier = Modifier
-                    .offset(x = 400.dp, y = 600.dp)
-                    .size(60.dp)
-                    .padding(5.dp),
-                initialOffset = fish10Offset,
-                imageResourceId = R.drawable.f_2
-            )
-            //fish-11
-            AnimatedFish(
-                fishModifier = Modifier
-                    .offset(x = 400.dp, y = 550.dp)
-                    .size(60.dp)
-                    .padding(5.dp),
-                initialOffset = fish11Offset,
-                imageResourceId = R.drawable.f_3
-            )
+                //fish-8
+                AnimatedFish(
+                    fishModifier = Modifier
+                        .offset(x = 200.dp, y = 600.dp)
+                        .size(60.dp)
+                        .padding(5.dp),
+                    initialOffset = fish8Offset,
+                    imageResourceId = R.drawable.f_1
+                )
+                //fish-9
+                AnimatedFish(
+                    fishModifier = Modifier
+                        .offset(x = 200.dp, y = 550.dp)
+                        .size(60.dp)
+                        .padding(5.dp),
+                    initialOffset = fish9Offset,
+                    imageResourceId = R.drawable.f_3
+                )
+                //fish-10
+                AnimatedFish(
+                    fishModifier = Modifier
+                        .offset(x = 10.dp, y = 600.dp)
+                        .size(60.dp)
+                        .padding(5.dp),
+                    initialOffset = fish10Offset,
+                    imageResourceId = R.drawable.f_3
+                )
+                //fish-11
+                AnimatedFish(
+                    fishModifier = Modifier
+                        .offset(x = 220.dp, y = 550.dp)
+                        .size(60.dp)
+                        .padding(5.dp),
+                    initialOffset = fish11Offset,
+                    imageResourceId = R.drawable.f_3
+                )
             }
         }
     }
