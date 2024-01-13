@@ -263,7 +263,7 @@ fun SmallerExpressionGame(navController: NavController) {
                                     coroutineScope.launch{
                                         if (expressions.first.value < expressions.second.value) {
                                             gameOver = checkOver(numberOfQuestion, maxNumberOfQuestion)
-                                            score++
+                                            score += 10
                                             level++
                                             isFail = false
                                             isTimeOut = true
@@ -281,7 +281,7 @@ fun SmallerExpressionGame(navController: NavController) {
                                     coroutineScope.launch {
                                         if (expressions.second.value < expressions.first.value) {
                                             gameOver = checkOver(numberOfQuestion, maxNumberOfQuestion)
-                                            score++
+                                            score += 10
                                             level++
                                             isFail = false
                                             isTimeOut = true

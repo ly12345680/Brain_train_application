@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -62,6 +63,8 @@ import com.example.braintrainapp.ui.data.UserData
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainMenu(navController: NavController) {
+    val Indigo = Color(0x3F, 0x51, 0xB5)
+    val Violet = Color(0xEE, 0x82, 0xEE)
     var user = UserData(R.drawable.user, "John Cena")
     val pageState = rememberPagerState(0)
     val slider = listOf(
@@ -77,8 +80,8 @@ Scaffold(
     },
     bottomBar = {
         BottomAppBar(
-             modifier = Modifier
-                 .background(Color(221, 255, 204), RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp)),
+            containerColor = Color.Transparent,
+            
         ) {
             Row(
                 modifier = Modifier
@@ -120,7 +123,11 @@ Scaffold(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFFAE7F3)),
+                .background(brush = Brush.verticalGradient(
+                    colors = listOf(Color.Yellow, Color.Green, Color.Blue, Violet),
+                    startY = 0.0f,
+                    endY = Float.POSITIVE_INFINITY)
+                ),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
