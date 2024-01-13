@@ -57,7 +57,7 @@ fun LanguageGame(navController: NavController){
     val pageState = rememberPagerState(0)
 
     val slider = listOf(
-        SlideData(R.drawable.brain3, "Word Hunt", "Find countries", Screen.ColorMemory.route),
+        SlideData(R.drawable.brain3, "Word Hunt", "Find countries", Screen.CompoundWords.route),
         SlideData(R.drawable.resim, "Compound Noun", "Complete the word", Screen.LetterWordHunt.route),
         SlideData(R.drawable.resim, "Unscramble Words", "Rearrange the order", Screen.UnscrambleWordsGame.route),
     )
