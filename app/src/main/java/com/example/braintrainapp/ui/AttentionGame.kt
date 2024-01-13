@@ -89,15 +89,15 @@ fun AttentionGame(navController: NavController) {
                     )
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = Color(204, 255, 255),
+                    containerColor = Color.Transparent,
                 ),
             )
         },
         bottomBar = {
             BottomAppBar(
-                modifier = Modifier
-                    .background(Color(221, 255, 204), RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp)),
-            ) {
+                containerColor = Color.Transparent,
+
+                ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -117,9 +117,7 @@ fun AttentionGame(navController: NavController) {
                     Icon(
                         imageVector = Icons.Filled.MoreVert,
                         contentDescription = "More",
-                        modifier = Modifier.clickable {
-                            navController.navigate(Screen.MainMenu.route)
-                        }
+                        modifier = Modifier.clickable { /* Handle click here */ }
                     )
                     Icon(
                         imageVector = Icons.Filled.Home,
@@ -140,7 +138,7 @@ fun AttentionGame(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFFAE7F3)),
+                .background(Color(140, 255, 102)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
