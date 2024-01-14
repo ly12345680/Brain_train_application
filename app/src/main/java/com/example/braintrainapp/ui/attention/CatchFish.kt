@@ -269,26 +269,26 @@ fun CatchFish(navController: NavController){
 //...
 
     // Hàm kiểm tra xem con cá có ở gần thuyền không
-    fun isFishNearBoat(fishOffset: Offset, boatOffset: Offset, boatSize: Dp): Boolean {
+    fun isFishNearBoat(fishOffset: Offset, boatOffset: Offset, boatSize: Dp, proximityThreshold: Dp): Boolean {
         val distance = calculateDistance(fishOffset.x, fishOffset.y, boatOffset.x, boatOffset.y)
 
         // Check if the fish is near the boat and hasn't been caught yet
-        return distance < (boatSize.value / 2) && !caughtFishList.contains(fishOffset)
+        return distance < proximityThreshold.value
     }
     // Kiểm tra khi người chơi nhấn vào hình chiếc thuyền
     if (isBoatClicked) {
-        val fishNearBoat1 = isFishNearBoat(fish1Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat2 = isFishNearBoat(fish2Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat3 = isFishNearBoat(fish3Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat4 = isFishNearBoat(fish4Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat5 = isFishNearBoat(fish5Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat6 = isFishNearBoat(fish6Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat7 = isFishNearBoat(fish7Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat8 = isFishNearBoat(fish8Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat9 = isFishNearBoat(fish9Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat10 = isFishNearBoat(fish10Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat11 = isFishNearBoat(fish11Offset, Offset(0f, 0f), boatSize)
-        val fishNearBoat12 = isFishNearBoat(fish12Offset, Offset(0f, 0f), boatSize)
+        val fishNearBoat1 = isFishNearBoat(fish1Offset, Offset(0f, 0f), boatSize, proximityThreshold = 10000.dp)
+        val fishNearBoat2 = isFishNearBoat(fish2Offset, Offset(0f, 0f), boatSize, proximityThreshold = 10000.dp)
+        val fishNearBoat3 = isFishNearBoat(fish3Offset, Offset(0f, 0f), boatSize, proximityThreshold = 10000.dp)
+        val fishNearBoat4 = isFishNearBoat(fish4Offset, Offset(0f, 0f), boatSize, proximityThreshold = 10000.dp)
+        val fishNearBoat5 = isFishNearBoat(fish5Offset, Offset(0f, 0f), boatSize, proximityThreshold = 11000.dp)
+        val fishNearBoat6 = isFishNearBoat(fish6Offset, Offset(0f, 0f), boatSize, proximityThreshold = 11500.dp)
+        val fishNearBoat7 = isFishNearBoat(fish7Offset, Offset(0f, 0f), boatSize, proximityThreshold = 11500.dp)
+        val fishNearBoat8 = isFishNearBoat(fish8Offset, Offset(0f, 0f), boatSize, proximityThreshold = 11500.dp)
+        val fishNearBoat9 = isFishNearBoat(fish9Offset, Offset(0f, 0f), boatSize, proximityThreshold = 11500.dp)
+        val fishNearBoat10 = isFishNearBoat(fish10Offset, Offset(0f, 0f), boatSize, proximityThreshold = 1150.dp)
+        val fishNearBoat11 = isFishNearBoat(fish11Offset, Offset(0f, 0f), boatSize, proximityThreshold = 1150.dp)
+        val fishNearBoat12 = isFishNearBoat(fish12Offset, Offset(0f, 0f), boatSize, proximityThreshold = 1150.dp)
         if (fishNearBoat1 || fishNearBoat2 || fishNearBoat3 || fishNearBoat4 || fishNearBoat5 || fishNearBoat6 || fishNearBoat7||fishNearBoat8||fishNearBoat9||fishNearBoat10||fishNearBoat11||fishNearBoat12) {
             if (!fishCaught) {
                 fishNearBoat = true
@@ -324,7 +324,8 @@ fun CatchFish(navController: NavController){
     }
 
     var isDialogVisible by remember { mutableStateOf(false) }
-
+    var isFishInsideBox1 by remember { mutableStateOf(false) }
+    var isFishInsideBox2 by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -420,10 +421,18 @@ fun CatchFish(navController: NavController){
                         )
                         .clickable {
                             if (!isBoatClicked) {
+                                // Check if fish is inside the box and not caught
+                                if (isFishInsideBox1 && !fishCaught) {
+                                    fishNearBoat = true
+                                    score += 1000
+                                    fishCaught = true
+
+                                    // Set new position for the caught fish
+                                    fish1Offset = getRandomFishOffset()
+                                }
                                 isBoatClicked = true
                             }
                         }
-
                 ){
                     Image(
                         painter = painterResource(id = R.drawable.boat),
@@ -444,10 +453,18 @@ fun CatchFish(navController: NavController){
                         )
                         .clickable {
                             if (!isBoatClicked) {
+                                // Check if fish is inside the box and not caught
+                                if (isFishInsideBox1 && !fishCaught) {
+                                    fishNearBoat = true
+                                    score += 1000
+                                    fishCaught = true
+
+                                    // Set new position for the caught fish
+                                    fish1Offset = getRandomFishOffset()
+                                }
                                 isBoatClicked = true
                             }
                         }
-
                 ){
                     Image(
                         painter = painterResource(id = R.drawable.boat),
@@ -468,10 +485,18 @@ fun CatchFish(navController: NavController){
                         )
                         .clickable {
                             if (!isBoatClicked) {
+                                // Check if fish is inside the box and not caught
+                                if (isFishInsideBox1 && !fishCaught) {
+                                    fishNearBoat = true
+                                    score += 1000
+                                    fishCaught = true
+
+                                    // Set new position for the caught fish
+                                    fish1Offset = getRandomFishOffset()
+                                }
                                 isBoatClicked = true
                             }
                         }
-
                 ){
                     Image(
                         painter = painterResource(id = R.drawable.boat),
@@ -555,7 +580,7 @@ fun CatchFish(navController: NavController){
                         .size(60.dp)
                         .padding(5.dp),
                     initialOffset = fish8Offset,
-                    imageResourceId = R.drawable.f_1
+                    imageResourceId = R.drawable.f_4
                 )
                 //fish-9
                 AnimatedFish(
@@ -564,7 +589,7 @@ fun CatchFish(navController: NavController){
                         .size(60.dp)
                         .padding(5.dp),
                     initialOffset = fish9Offset,
-                    imageResourceId = R.drawable.f_3
+                    imageResourceId = R.drawable.f_5
                 )
                 //fish-10
                 AnimatedFish(
@@ -573,7 +598,7 @@ fun CatchFish(navController: NavController){
                         .size(60.dp)
                         .padding(5.dp),
                     initialOffset = fish10Offset,
-                    imageResourceId = R.drawable.f_3
+                    imageResourceId = R.drawable.f_5
                 )
                 //fish-11
                 AnimatedFish(
@@ -582,7 +607,7 @@ fun CatchFish(navController: NavController){
                         .size(60.dp)
                         .padding(5.dp),
                     initialOffset = fish11Offset,
-                    imageResourceId = R.drawable.f_3
+                    imageResourceId = R.drawable.f_4
                 )
             }
         }

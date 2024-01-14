@@ -76,6 +76,8 @@ class FindDifferencesState {
         currentImage = R.drawable.df_2
         // Change the position of the box here
         boxPosition = Pair(290.dp, 310.dp)
+        currentImage = R.drawable.df_3
+        boxPosition = Pair(290.dp, 310.dp)
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
