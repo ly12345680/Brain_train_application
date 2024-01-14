@@ -96,7 +96,9 @@ fun FinDifferences(navController: NavController){
                         contentDescription = "Menu",
                         modifier = Modifier
                             .padding(12.dp)
-                            .clickable { /* Handle menu click */ }
+                            .clickable {
+                                navController.popBackStack()
+                            }
                     )
                 },
                 actions = {

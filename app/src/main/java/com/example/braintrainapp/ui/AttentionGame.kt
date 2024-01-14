@@ -59,8 +59,8 @@ fun AttentionGame(navController: NavController) {
     val context = LocalContext.current
     val slider = listOf(
         SlideData(R.drawable.find2, "Find Different Point", "Find Different Point at given image=", Screen.FindDifferences.route),
-        SlideData(R.drawable.pair, "Catch Fishes", "Catch Fishes", Screen.CatchFish.route),
-        SlideData(R.drawable.fish, "Pair images", "Choose the duplicated images from the list of images", Screen.PairImage.route),
+        SlideData(R.drawable.fish, "Catch Fishes", "Catch Fishes", Screen.CatchFish.route),
+        SlideData(R.drawable.pair, "Pair images", "Choose the duplicated images from the list of images", Screen.PairImage.route),
     )
     Scaffold(
         topBar = {
