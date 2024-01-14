@@ -2,15 +2,23 @@ package com.example.braintrainapp.ui.language_game.letter_word_hunt
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -33,9 +43,10 @@ fun generateLetter(): Char {
     return alphabet.random()
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun LetterWordHunt() {
+fun LetterWordHunt(navController: NavController) {
     val gameDuration = 2 * 60 // 2 minutes in seconds
 
     var timerJob by remember { mutableStateOf<Job?>(null) }
@@ -58,24 +69,56 @@ fun LetterWordHunt() {
     }
 
     MaterialTheme {
-        GameScreen(
-            currentLetter = currentLetter,
-            remainingTime = remainingTime,
-            score = score,
-            wordsFound = wordsFound,
-            onWordFound = ::onWordFound,
-            word = word,
-            onWordChange = { word = it },
-            dialogShown = dialogShown,
-            onDialogDismiss = { dialogShown = false },
-            onPlayAgainRequest = { dialogShown = true}
-        )
-        if (dialogShown) {
-            GameOverDialog(
+        Scaffold (
+            topBar = {
+                TopAppBar(
+                    title = { Text("Word Hunt") },
+                    navigationIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Menu",
+                            modifier = Modifier
+                                .padding(12.dp)
+                                .clickable {
+                                    navController.popBackStack()
+                                }
+                        )
+                    },
+                    actions = {
+                        Icon(
+                            imageVector = Icons.Filled.Info,
+                            contentDescription = "Guidelines",
+                            modifier = Modifier
+                                .padding(end = 12.dp)
+                                .clickable { /* Handle guidelines click */ }
+                        )
+                    },
+                    colors = TopAppBarDefaults.largeTopAppBarColors(
+                        containerColor = Color(229, 237, 155, 255),
+                    )
+
+                )
+            }
+        ) {paddingvalue ->
+            GameScreen(
+                currentLetter = currentLetter,
+                remainingTime = remainingTime,
                 score = score,
                 wordsFound = wordsFound,
-                onDismissRequest = { dialogShown = false },
-                onPlayAgainRequest = { dialogShown = true})
+                onWordFound = ::onWordFound,
+                word = word,
+                onWordChange = { word = it },
+                dialogShown = dialogShown,
+                onDialogDismiss = { dialogShown = false },
+                onPlayAgainRequest = { dialogShown = true }
+            )
+            if (dialogShown) {
+                GameOverDialog(
+                    score = score,
+                    wordsFound = wordsFound,
+                    onDismissRequest = { dialogShown = false },
+                    onPlayAgainRequest = { dialogShown = true })
+            }
         }
     }
 
@@ -136,7 +179,7 @@ fun GameScreen(
     onPlayAgainRequest: () -> Unit
 ) {
     Column(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(vertical = 100.dp, horizontal = 16.dp).fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
@@ -290,5 +333,5 @@ fun GameOverDialog(
 @Preview
 @Composable
 fun PreviewLetterWordHunt() {
-    LetterWordHunt()
+    LetterWordHunt(navController = rememberNavController())
 }

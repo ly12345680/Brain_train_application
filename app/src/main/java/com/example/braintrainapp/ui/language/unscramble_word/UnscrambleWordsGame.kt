@@ -2,14 +2,22 @@ package com.example.braintrainapp.ui.language_game.unscramble_words
 
 import android.os.CountDownTimer
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +27,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
@@ -26,7 +36,7 @@ import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UnscrambleWordsGame() {
+fun UnscrambleWordsGame(navController : NavController) {
 
     var snackbarVisible by remember { mutableStateOf(false) }
     var snackbarMessage by remember { mutableStateOf("") }
@@ -51,165 +61,208 @@ fun UnscrambleWordsGame() {
             onTick = {millisUntilFinished ->
                 timeRemaining = millisUntilFinished})}
 
-    Column(
-        modifier = Modifier
-            .padding(16.dp), //.background(Color(0xffffcc99)),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Scaffold (
+        topBar = {
+            TopAppBar(
+                title = { Text("Unscramble word") },
+                navigationIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Menu",
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .clickable {
+                                navController.popBackStack()
+                            }
+                    )
+                },
+                actions = {
+                    Icon(
+                        imageVector = Icons.Filled.Info,
+                        contentDescription = "Guidelines",
+                        modifier = Modifier
+                            .padding(end = 12.dp)
+                            .clickable { /* Handle guidelines click */ }
+                    )
+                },
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                    containerColor = Color(229, 237, 155, 255),
+                )
 
+            )
+        }
+    ) { paddingvalue ->
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .padding(vertical = 100.dp, horizontal = 16.dp)
+                .fillMaxSize(), //.background(Color(0xffffcc99)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xffffcc99), RoundedCornerShape(16.dp)),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Text(
-                    text = "Unscramble Word",
-                    style = TextStyle(fontSize = 24.sp),
-                    modifier = Modifier.padding(bottom = 16.dp, top = 16.dp) //.background(Color(0xffffcc99))
-                )
-            }
-            Text(
-                text = "Time: ${timeRemaining / 1000}",
-                style = TextStyle(fontSize = 20.sp),
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            Button (
-                onClick = {
-                    shuffleQuestion.value = false // Stop shuffling the question
-                    timer.start() // Start the timer
-                },
-                colors = ButtonDefaults.buttonColors(Color(0xFFF06292)),
-                modifier = Modifier.padding(top = 16.dp)
-            ){
-                Text(
-                    text = "Score: ${score.value}",
-                    style = TextStyle(fontSize = 20.sp),
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
-        }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFFE6EE9C), RoundedCornerShape(16.dp))
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ){
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Text(
-                    text = "What is this word?",
-                    style = TextStyle(fontSize = 20.sp),
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                Text(
-                    //text = currentWord.value.toList().shuffled().joinToString(""),
-                    text = if (shuffleQuestion.value) currentWord.value.toList().shuffled()
-                        .joinToString("") else currentWord.value,
-                    style = TextStyle(fontSize = 20.sp),
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xffffcc99), RoundedCornerShape(16.dp)),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Unscramble Word",
+                        style = TextStyle(fontSize = 24.sp),
+                        modifier = Modifier.padding(
+                            bottom = 16.dp,
+                            top = 16.dp
+                        )
+                    )
+                }
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(Color(0xFFF06292)),
+                    modifier = Modifier.padding(top = 16.dp)
+                ) {
+                    Text(
+                        text = "Time: ${timeRemaining / 1000}",
+                        style = TextStyle(fontSize = 20.sp),
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                }
+                Button(
+                    onClick = {
+                        shuffleQuestion.value = false // Stop shuffling the question
+                        timer.start() // Start the timer
+                    },
+                    colors = ButtonDefaults.buttonColors(Color(0xFFF06292)),
+                    modifier = Modifier.padding(top = 16.dp)
+                ) {
+                    Text(
+                        text = "Score: ${score.value}",
+                        style = TextStyle(fontSize = 20.sp),
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
 
-                TextField(
-                    value = userAnswerState.value,
-                    onValueChange = { userAnswerState.value = it },
-                    label = { Text("Enter your answer") },
-                    modifier = Modifier.fillMaxWidth()
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFFE6EE9C), RoundedCornerShape(16.dp))
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "What is this word?",
+                        style = TextStyle(fontSize = 20.sp),
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Text(
+                        //text = currentWord.value.toList().shuffled().joinToString(""),
+                        text = if (shuffleQuestion.value) currentWord.value.toList().shuffled()
+                            .joinToString("") else currentWord.value,
+                        style = TextStyle(fontSize = 20.sp),
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+
+                    TextField(
+                        value = userAnswerState.value,
+                        onValueChange = { userAnswerState.value = it },
+                        label = { Text("Enter your answer") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Button(
+                        onClick = {
+                            val userAnswer = userAnswerState.value.text
+                            val isCorrectAnswer =
+                                userAnswer.equals(currentWord.value, ignoreCase = true)
+                            snackbarMessage = if (isCorrectAnswer) "Correct!" else "Incorrect!"
+                            snackbarVisible = true
+                            coroutineScope.launch {
+                                delay(1500)
+                                snackbarVisible = false
+
+                                if (isCorrectAnswer) {
+                                    val nextIndex = Random.nextInt(0, allWordsList.size)
+
+                                    currentWordIndex.value = nextIndex
+                                    currentWord.value = allWordsList[nextIndex]
+
+                                    userAnswerState.value = TextFieldValue()
+                                    score.value += 200
+                                }
+
+                                questionCount.value += 1
+                                if (questionCount.value >= 10) {
+                                    playAgain.value = true
+                                } else {
+                                    timer.start()
+                                }
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(Color.DarkGray),
+                        modifier = Modifier.padding(top = 16.dp)
+                    ) {
+                        Text(text = "Check Answer")
+                    }
+                }
+
+                if (snackbarVisible) {
+
+                    Snackbar(
+                        modifier = Modifier.padding(top = 16.dp),
+                        action = {
+                            Button(onClick = { snackbarVisible = false }) {
+                                Text("Dismiss")
+                            }
+                        }
+                    ) {
+                        Text(text = snackbarMessage)
+                    }
+                }
+            }
+
+
+            if (playAgain.value) {
+                Text(
+                    text = "Total Score: ${score.value}",
+                    style = TextStyle(fontSize = 24.sp),
+                    modifier = Modifier.padding(bottom = 16.dp)
                 )
 
                 Button(
                     onClick = {
-                        val userAnswer = userAnswerState.value.text
-                        val isCorrectAnswer =
-                            userAnswer.equals(currentWord.value, ignoreCase = true)
-                        snackbarMessage = if (isCorrectAnswer) "Correct!" else "Incorrect!"
-                        snackbarVisible = true
-                        coroutineScope.launch {
-                            delay(1500)
-                            snackbarVisible = false
-
-                            if (isCorrectAnswer) {
-                                val nextIndex = Random.nextInt(0, allWordsList.size)
-
-                                currentWordIndex.value = nextIndex
-                                currentWord.value = allWordsList[nextIndex]
-
-                                userAnswerState.value = TextFieldValue()
-                                score.value += 200
-                            }
-
-                            questionCount.value += 1
-                            if (questionCount.value >= 10) {
-                                playAgain.value = true
-                            } else {
-                                timer.start()
-                            }
-                        }
+                        // Restart all variables to play one more timr
+                        questionCount.value = 0
+                        score.value = 0
+                        currentWordIndex.value = Random.nextInt(0, allWordsList.size)
+                        currentWord.value = allWordsList[currentWordIndex.value]
+                        userAnswerState.value = TextFieldValue()
+                        playAgain.value = false
                     },
-                    colors = ButtonDefaults.buttonColors(Color.DarkGray),
                     modifier = Modifier.padding(top = 16.dp)
                 ) {
-                    Text(text = "Check Answer")
+                    Text(
+                        text = "Play Again",
+                        style = TextStyle(fontSize = 24.sp),
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
                 }
             }
 
-            if (snackbarVisible) {
+            DisposableEffect(Unit) {
+                timer.start()
 
-                Snackbar(
-                    modifier = Modifier.padding(top = 16.dp),
-                    action = {
-                        Button(onClick = { snackbarVisible = false }) {
-                            Text("Dismiss")
-                        }
-                    }
-                ) {
-                    Text(text = snackbarMessage)
+                onDispose {
+                    timer.cancel()
                 }
-            }
-        }
-
-
-        if (playAgain.value){
-            Text(
-                text = "Total Score: ${score.value}",
-                style = TextStyle(fontSize = 24.sp),
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-
-            Button(
-                onClick = {
-                    // Restart all variables to play one more timr
-                    questionCount.value = 0
-                    score.value = 0
-                    currentWordIndex.value = Random.nextInt(0, allWordsList.size)
-                    currentWord.value = allWordsList[currentWordIndex.value]
-                    userAnswerState.value = TextFieldValue()
-                    playAgain.value = false
-                },
-                modifier = Modifier.padding(top = 16.dp)
-            ) {
-                Text(
-                    text = "Play Again",
-                    style = TextStyle(fontSize = 24.sp),
-                    modifier = Modifier.padding(bottom = 16.dp))
-            }
-        }
-
-        DisposableEffect(Unit) {
-            timer.start()
-
-            onDispose {
-                timer.cancel()
             }
         }
     }
@@ -233,5 +286,5 @@ class GameCountDownTimer(
 @Preview
 @Composable
 fun PreviewUnscrambleGame() {
-    UnscrambleWordsGame()
+    UnscrambleWordsGame(navController = rememberNavController())
 }

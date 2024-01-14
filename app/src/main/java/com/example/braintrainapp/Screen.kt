@@ -92,13 +92,13 @@ fun MyApp() {
                 RemembersImages(navController = navController)
             }
             composable(Screen.UnscrambleWordsGame.route) {
-                UnscrambleWordsGame()
+                UnscrambleWordsGame(navController = navController)
             }
             composable(Screen.LetterWordHunt.route) {
-                LetterWordHunt()
+                LetterWordHunt(navController = navController)
             }
             composable(Screen.CompoundWords.route) {
-                CompoundNounGame()
+                CompoundNounGame(navController = navController)
             }
         }
     }
