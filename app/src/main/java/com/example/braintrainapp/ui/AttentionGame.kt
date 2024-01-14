@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,7 +56,7 @@ import com.example.braintrainapp.ui.data.SlideData
 @Composable
 fun AttentionGame(navController: NavController) {
     val pageState = rememberPagerState(0)
-
+    val context = LocalContext.current
     val slider = listOf(
         SlideData(R.drawable.find2, "Find Different Point", "Find Different Point at given image=", Screen.FindDifferences.route),
         SlideData(R.drawable.pair, "Catch Fishes", "Catch Fishes", Screen.CatchFish.route),
@@ -158,7 +159,8 @@ fun AttentionGame(navController: NavController) {
 
                 ) { page ->
                 val (imageRes, title, description, route) = slider[page]
-                val onClick = {
+                val onClick = {route: String ->
+                    PlayClickSound(context = context)
                     navController.navigate(route)
                 }
                 val scale by animateFloatAsState(
@@ -175,7 +177,7 @@ fun AttentionGame(navController: NavController) {
                         5.dp, Color.White
                     ),
                     modifier = Modifier
-                        .clickable(onClick = onClick)
+                        .clickable(onClick = { onClick(slider[page].route) })
                         .scale(scale)
                         .alpha(alpha)
                 ) {

@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,7 +58,7 @@ import com.example.braintrainapp.ui.data.SlideData
 @Composable
 fun MathGame(navController: NavController){
     val pageState = rememberPagerState(0)
-
+    val context = LocalContext.current
     val slider = listOf(
         SlideData(R.drawable.finsum, "Find The Sum", "Combine 2 digits whose sum is equal condition", Screen.FindSum.route),
         SlideData(R.drawable.handbag, "Find The Smallest Price", "Pick a expression has smallest value", Screen.SmallerExpression.route),
@@ -159,7 +160,8 @@ fun MathGame(navController: NavController){
 
                 ) { page ->
                 val (imageRes, title, description, route) = slider[page]
-                val onClick = {
+                val onClick = {route: String ->
+                    PlayClickSound(context = context)
                     navController.navigate(route)
                 }
                 val scale by animateFloatAsState(
@@ -176,7 +178,7 @@ fun MathGame(navController: NavController){
                         5.dp, Color.White
                     ),
                     modifier = Modifier
-                        .clickable(onClick = onClick)
+                        .clickable(onClick = { onClick(slider[page].route) })
                         .scale(scale)
                         .alpha(alpha)
                 ) {

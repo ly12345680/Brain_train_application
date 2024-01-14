@@ -9,7 +9,7 @@ class MainActivity : ComponentActivity() {
      lateinit var mediaPlayer: MediaPlayer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mediaPlayer = MediaPlayer.create(this, R.raw.background)
+        mediaPlayer = MediaPlayer.create(this, R.raw.cozybackground)
         mediaPlayer.isLooping = true // Set looping
         mediaPlayer.start() // Start playing
 

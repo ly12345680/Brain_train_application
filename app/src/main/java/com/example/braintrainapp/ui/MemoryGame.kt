@@ -43,6 +43,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -65,7 +66,7 @@ fun MemoryGame(
     navController: NavController
 ){
     val pageState = rememberPagerState(0)
-
+    val context = LocalContext.current
     val slider = listOf(
         SlideData(R.drawable.colormemory, "Color Memory", "Pick Right Color positions", Screen.ColorMemory.route),
         SlideData(R.drawable.find, "Find New Image", "Find New Images", Screen.FindNewImage.route),
@@ -166,7 +167,8 @@ fun MemoryGame(
 
                 ) { page ->
                 val (imageRes, title, description, route) = slider[page]
-                val onClick = {
+                val onClick = {route: String ->
+                    PlayClickSound(context = context)
                     navController.navigate(route)
                 }
                 val scale by animateFloatAsState(
@@ -183,7 +185,7 @@ fun MemoryGame(
                         5.dp, Color.White
                     ),
                     modifier = Modifier
-                        .clickable(onClick = onClick)
+                        .clickable(onClick = { onClick(slider[page].route) })
                         .scale(scale)
                         .alpha(alpha)
                 ) {

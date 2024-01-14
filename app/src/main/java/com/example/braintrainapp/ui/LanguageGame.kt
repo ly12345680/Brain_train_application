@@ -1,5 +1,7 @@
 package com.example.braintrainapp.ui
 
+import android.content.Context
+import android.media.MediaPlayer
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -41,6 +43,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,7 +60,7 @@ import com.example.braintrainapp.ui.data.SlideData
 @Composable
 fun LanguageGame(navController: NavController){
     val pageState = rememberPagerState(0)
-
+    val context = LocalContext.current
     val slider = listOf(
         SlideData(R.drawable.initial, "Find Words That Start With ", "Find Words That Start With", Screen.LetterWordHunt.route),
         SlideData(R.drawable.nextword, "Find The Next Word", "Find The Next Word", Screen.CompoundWords.route),
@@ -160,7 +163,8 @@ fun LanguageGame(navController: NavController){
 
                 ) { page ->
                 val (imageRes, title, description, route) = slider[page]
-                val onClick = {
+                val onClick = {route: String ->
+                    PlayClickSound(context = context)
                     navController.navigate(route)
                 }
                 val scale by animateFloatAsState(
@@ -177,7 +181,7 @@ fun LanguageGame(navController: NavController){
                         5.dp, Color.White
                     ),
                     modifier = Modifier
-                        .clickable(onClick = onClick)
+                        .clickable(onClick = { onClick(slider[page].route) })
                         .scale(scale)
                         .alpha(alpha)
                 ) {
