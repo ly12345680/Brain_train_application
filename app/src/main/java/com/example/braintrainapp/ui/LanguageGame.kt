@@ -59,9 +59,9 @@ fun LanguageGame(navController: NavController){
     val pageState = rememberPagerState(0)
 
     val slider = listOf(
-        SlideData(R.drawable.brain3, "Memory Games", "Pick Right Color posiontions", Screen.ColorMemory.route),
-        SlideData(R.drawable.resim, "Languages Games", "Find New Images", Screen.FindNewImage.route),
-        SlideData(R.drawable.resim, "Attention Games", "Find The Disappear Image", Screen.FindDifferences.route),
+        SlideData(R.drawable.initial, "Find Words That Start With ", "Find Words That Start With", Screen.LetterWordHunt.route),
+        SlideData(R.drawable.nextword, "Find The Next Word", "Find The Next Word", Screen.CompoundWords.route),
+        SlideData(R.drawable.arrange, "Arrange Word", "Arrange Word", Screen.UnscrambleWordsGame.route),
     )
     Scaffold(
         topBar = {
@@ -91,14 +91,13 @@ fun LanguageGame(navController: NavController){
                     )
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = Color(204, 255, 255),
+                    containerColor = Color.Transparent,
                 ),
             )
         },
         bottomBar = {
             BottomAppBar(
-                modifier = Modifier
-                    .background(Color(221, 255, 204), RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp)),
+                containerColor = Color.Transparent,
             ) {
                 Row(
                     modifier = Modifier
@@ -142,7 +141,7 @@ fun LanguageGame(navController: NavController){
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFFAE7F3)),
+                .background(Color(255, 255, 153)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

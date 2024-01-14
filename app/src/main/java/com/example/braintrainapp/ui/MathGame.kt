@@ -59,8 +59,8 @@ fun MathGame(navController: NavController){
     val pageState = rememberPagerState(0)
 
     val slider = listOf(
-        SlideData(R.drawable.brain3, "Find The Sum", "Combine 2 digits whose sum is equal condition", Screen.FindSum.route),
-        SlideData(R.drawable.resim, "Find The Smallest Expression", "Pick a expression has smallest value", Screen.SmallerExpression.route),
+        SlideData(R.drawable.finsum, "Find The Sum", "Combine 2 digits whose sum is equal condition", Screen.FindSum.route),
+        SlideData(R.drawable.handbag, "Find The Smallest Price", "Pick a expression has smallest value", Screen.SmallerExpression.route),
     )
     Scaffold(
         topBar = {

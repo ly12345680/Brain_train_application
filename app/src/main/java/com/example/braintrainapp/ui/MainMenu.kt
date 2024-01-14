@@ -69,9 +69,9 @@ fun MainMenu(navController: NavController) {
     val pageState = rememberPagerState(0)
     val slider = listOf(
         SlideData(R.drawable.brain3, "Memory Games", "Train Your Memory Skills", Screen.MemoryGame.route),
-        SlideData(R.drawable.resim, "Languages Games", "Train Your Languages Skills", Screen.LanguageGame.route),
-        SlideData(R.drawable.resim, "Attention Games", "Train Your Attention Skills", Screen.AttentionGame.route),
-        SlideData(R.drawable.resim, "Math Games", "Train Your Math Skills", Screen.MathGame.route),
+        SlideData(R.drawable.language, "Languages Games", "Train Your Languages Skills", Screen.LanguageGame.route),
+        SlideData(R.drawable.attention, "Attention Games", "Train Your Attention Skills", Screen.AttentionGame.route),
+        SlideData(R.drawable.math, "Math Games", "Train Your Math Skills", Screen.MathGame.route),
     )
 Scaffold(
     topBar = {

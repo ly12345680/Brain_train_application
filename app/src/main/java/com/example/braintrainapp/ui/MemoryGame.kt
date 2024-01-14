@@ -67,9 +67,9 @@ fun MemoryGame(
     val pageState = rememberPagerState(0)
 
     val slider = listOf(
-        SlideData(R.drawable.brain3, "Color Memory", "Pick Right Color positions", Screen.ColorMemory.route),
-        SlideData(R.drawable.resim, "Find New Image", "Find New Images", Screen.FindNewImage.route),
-        SlideData(R.drawable.resim, "Remember Image", "Find The Disappear Image", Screen.RememberImages.route),
+        SlideData(R.drawable.colormemory, "Color Memory", "Pick Right Color positions", Screen.ColorMemory.route),
+        SlideData(R.drawable.find, "Find New Image", "Find New Images", Screen.FindNewImage.route),
+        SlideData(R.drawable.rememberimage, "Which picture is that?", "Find The Disappear Image", Screen.RememberImages.route),
     )
     Scaffold(
         topBar = {
