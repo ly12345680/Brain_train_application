@@ -8,10 +8,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
@@ -29,11 +31,50 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.braintrainapp.ui.memory.SearchDialog2
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.random.Random
+@Composable
+fun SearchDialog6(onDismiss: () -> Unit, onSearch: () -> Unit) {
+//    var playerName by remember { mutableStateOf(TextFieldValue()) }
 
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Game Instructions")
+        },
+        text = {
+            Column {
+                Text("Step 1: This game will provide a phrase whose letters are shuffled.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 2: The player's task is to rearrange the order of the letters to find the correct word.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("10 questions/20s-questions/200 per correct answer")
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onSearch()
+                    onDismiss()
+                }
+            ) {
+                Text("Got it!")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Text("Cancel")
+            }
+        }
+    )
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UnscrambleWordsGame(navController : NavController) {
@@ -60,7 +101,7 @@ fun UnscrambleWordsGame(navController : NavController) {
             onFinish = { shuffleQuestion.value = true},
             onTick = {millisUntilFinished ->
                 timeRemaining = millisUntilFinished})}
-
+    var isDialogVisible by remember { mutableStateOf(false) }
     Scaffold (
         topBar = {
             TopAppBar(
@@ -77,19 +118,29 @@ fun UnscrambleWordsGame(navController : NavController) {
                     )
                 },
                 actions = {
-                    Icon(
-                        imageVector = Icons.Filled.Info,
-                        contentDescription = "Guidelines",
-                        modifier = Modifier
-                            .padding(end = 12.dp)
-                            .clickable { /* Handle guidelines click */ }
-                    )
+                    IconButton(onClick = {
+                        isDialogVisible = true
+                    }) {
+                        Icon(Icons.Filled.Info, contentDescription = "Search")
+                    }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = Color(229, 237, 155, 255),
                 )
-
             )
+            // Kiểm tra nếu Dialog nên hiển thị
+            if (isDialogVisible) {
+                SearchDialog6(
+                    onDismiss = {
+                        // Khi nhấn Cancel, ẩn Dialog
+                        isDialogVisible = false
+                    },
+                    onSearch = {
+                        // Xử lý hành động tìm kiếm, sau đó ẩn Dialog
+                        isDialogVisible = false
+                    }
+                )
+            }
         }
     ) { paddingvalue ->
         Column(

@@ -9,10 +9,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,13 +34,51 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.braintrainapp.ui.language_game.unscramble_words.SearchDialog6
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+@Composable
+fun SearchDialog7(onDismiss: () -> Unit, onSearch: () -> Unit) {
+//    var playerName by remember { mutableStateOf(TextFieldValue()) }
 
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Game Instructions")
+        },
+        text = {
+            Column {
+                Text("Step 1: The game has a duration of 2 minutes.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 2: The task is to find words that can be combined with the given initial word into a meaningful compound word.")
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onSearch()
+                    onDismiss()
+                }
+            ) {
+                Text("Got it!")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Text("Cancel")
+            }
+        }
+    )
+}
 data class CompoundWordList(val baseWord: String, val meaning: String)
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -54,10 +94,9 @@ fun CompoundNounGame(navController: NavController) {
     var timerJob by remember { mutableStateOf<Job?>(null) }
     var remainingTime by remember { mutableStateOf(gameDuration) }
     var dialogShown by remember { mutableStateOf(false) }
-
     val currentCompoundWordIndex = remember { mutableStateOf(Random.nextInt(compoundWords.size) + 10 ) }
     var currentCompoundWord = compoundWords[currentCompoundWordIndex.value]
-
+    var isDialogVisible by remember { mutableStateOf(false) }
     Scaffold (
         topBar = {
             TopAppBar(
@@ -74,19 +113,29 @@ fun CompoundNounGame(navController: NavController) {
                     )
                 },
                 actions = {
-                    Icon(
-                        imageVector = Icons.Filled.Info,
-                        contentDescription = "Guidelines",
-                        modifier = Modifier
-                            .padding(end = 12.dp)
-                            .clickable { /* Handle guidelines click */ }
-                    )
+                    IconButton(onClick = {
+                        isDialogVisible = true
+                    }) {
+                        Icon(Icons.Filled.Info, contentDescription = "Search")
+                    }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = Color(229, 237, 155, 255),
                 )
-
             )
+            // Kiểm tra nếu Dialog nên hiển thị
+            if (isDialogVisible) {
+                SearchDialog7(
+                    onDismiss = {
+                        // Khi nhấn Cancel, ẩn Dialog
+                        isDialogVisible = false
+                    },
+                    onSearch = {
+                        // Xử lý hành động tìm kiếm, sau đó ẩn Dialog
+                        isDialogVisible = false
+                    }
+                )
+            }
         }
     ) { paddingvalue ->
         Column(
