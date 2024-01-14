@@ -45,6 +45,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -72,13 +73,68 @@ class FindDifferencesState {
         private set
 
     fun changeImageAndBoxPosition() {
-        // Change the image resource ID here
-        currentImage = R.drawable.df_2
-        // Change the position of the box here
-        boxPosition = Pair(290.dp, 310.dp)
-        currentImage = R.drawable.df_3
-        boxPosition = Pair(290.dp, 310.dp)
+        nextLevel()
+        boxPosition = getInitialBoxPositionForLevel(currentLevel)
     }
+    private val imageResources = listOf(
+        R.drawable.df_1,
+        R.drawable.df_2,
+        R.drawable.df_3,
+        R.drawable.df_4
+        // Add more image resource IDs for additional levels if needed
+    )
+
+    var currentLevel by mutableStateOf(0)
+        private set
+    var isWinDialogVisible = mutableStateOf(false)
+        private set
+    // Modify the nextLevel function to set isWinDialogVisible to true when the player wins
+    fun nextLevel() {
+        // Move to the next level only if the current level is df_0, df_1, or df_2 and isWinner is true
+        if ((currentLevel == 0 || currentLevel == 1 || currentLevel == 2) && isWinner) {
+            currentLevel++
+            isWinner = false  // Reset isWinner after moving to the next level
+            if (currentLevel < imageResources.size) {
+                currentImage = imageResources[currentLevel]
+                boxPosition = getInitialBoxPositionForLevel(currentLevel)
+
+                // Set the MutableState to true when the player successfully completes the current level
+                isWinDialogVisible.value = true
+            } else {
+                // Handle game completion logic here if needed
+                println("Game completed!")
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+    private fun getInitialBoxPositionForLevel(level: Int): Pair<Dp, Dp> {
+        // Define the initial box position for each level if needed
+        return when (level) {
+            0 -> Pair(250.dp, 145.dp)
+            1 -> Pair(290.dp, 310.dp)
+            2 -> Pair(135.dp,265.dp)
+            3 -> Pair(260.dp,120.dp)
+            // Add more cases for additional levels if needed
+            else -> Pair(10.dp, 10.dp)
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,6 +144,7 @@ fun FinDifferences(navController: NavController){
     var level = remember { mutableStateOf(1) }
     var timeLeft by remember { mutableStateOf(5)}
     var isDialogVisible by remember { mutableStateOf(false) }
+    var isWinDialogVisible by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -164,7 +221,10 @@ fun FinDifferences(navController: NavController){
             Box(
                 modifier = Modifier
                     .background(Color(136,135,112))
-
+                    .border(
+                        width = 2.dp,
+                        color = Color.Black // Change this to the desired color
+                    )
             ){
                 var isBoxPressed by remember { mutableStateOf(false) }
                 Box(
@@ -183,7 +243,7 @@ fun FinDifferences(navController: NavController){
                         }
                         .border(
                             width = 2.dp,
-                            color = if (isBoxPressed) Color.Blue else Color.Transparent
+                            color = Color.Red
                         )
                 )
                 Image(
@@ -204,6 +264,12 @@ fun FinDifferences(navController: NavController){
             if (state.isWinner && dialogShown.value) {
                 WinDialog {
                     dialogShown.value = false
+                }
+            }
+            if (state.isWinDialogVisible.value) {
+                WinDialog {
+                    // Handle any logic you need when the WinDialog is dismissed
+                    state.isWinDialogVisible.value = false  // Reset the flag after the dialog is dismissed
                 }
             }
 
