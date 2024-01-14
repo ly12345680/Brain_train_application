@@ -38,6 +38,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -60,7 +61,45 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlin.math.sqrt
 
+@Composable
+fun SearchDialog4(onDismiss: () -> Unit, onSearch: () -> Unit) {
+//    var playerName by remember { mutableStateOf(TextFieldValue()) }
 
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Game Instructions")
+        },
+        text = {
+            Column {
+                Text("Step 1: The game will provide pairs of different pictures.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 2: The player's task is to choose the exact pictures into a pair .")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("GoodLuck and try get higher score!!!")
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onSearch()
+                    onDismiss()
+                }
+            ) {
+                Text("Got it!")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Text("Cancel")
+            }
+        }
+    )
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PairImage(navController: NavController) {
@@ -206,6 +245,7 @@ fun PairImage(navController: NavController) {
             )
         }
     }
+    var isDialogVisible by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -228,18 +268,29 @@ fun PairImage(navController: NavController) {
                         modifier = Modifier.padding(end = 16.dp),
                         style = TextStyle(fontSize = 20.sp, color = Color.Blue, fontWeight = FontWeight.Bold),
                     )
-                    Icon(
-                        imageVector = Icons.Filled.Info,
-                        contentDescription = "Guidelines",
-                        modifier = Modifier
-                            .padding(end = 12.dp)
-                            .clickable { /* Handle guidelines click */ }
-                    )
+                    IconButton(onClick = {
+                        isDialogVisible = true
+                    }) {
+                        Icon(Icons.Filled.Info, contentDescription = "Search")
+                    }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = Color(204, 255, 255),
                 ),
             )
+            // Kiểm tra nếu Dialog nên hiển thị
+            if (isDialogVisible) {
+                SearchDialog4(
+                    onDismiss = {
+                        // Khi nhấn Cancel, ẩn Dialog
+                        isDialogVisible = false
+                    },
+                    onSearch = {
+                        // Xử lý hành động tìm kiếm, sau đó ẩn Dialog
+                        isDialogVisible = false
+                    }
+                )
+            }
         }
     ) { paddingValues ->
         Column(

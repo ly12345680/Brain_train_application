@@ -39,12 +39,14 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.R
@@ -57,9 +59,9 @@ fun LanguageGame(navController: NavController){
     val pageState = rememberPagerState(0)
 
     val slider = listOf(
-        SlideData(R.drawable.brain3, "Word Hunt", "Find countries", Screen.ColorMemory.route),
-        SlideData(R.drawable.resim, "Compound Noun", "Complete the word", Screen.LetterWordHunt.route),
-        SlideData(R.drawable.resim, "Unscramble Words", "Rearrange the order", Screen.UnscrambleWordsGame.route),
+        SlideData(R.drawable.brain3, "Memory Games", "Pick Right Color posiontions", Screen.ColorMemory.route),
+        SlideData(R.drawable.resim, "Languages Games", "Find New Images", Screen.FindNewImage.route),
+        SlideData(R.drawable.resim, "Attention Games", "Find The Disappear Image", Screen.FindDifferences.route),
     )
     Scaffold(
         topBar = {
@@ -226,13 +228,13 @@ fun LanguageGame(navController: NavController){
                                     description,
                                     fontSize = 14.sp
                                 )
+                            }
                         }
                     }
                 }
             }
         }
-    }
-}}
+    }}
 
 @Preview(showBackground = true)
 @Composable

@@ -38,9 +38,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import com.example.braintrainapp.R
@@ -51,6 +53,45 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.Screen
+@Composable
+fun SearchDialog2(onDismiss: () -> Unit, onSearch: () -> Unit) {
+//    var playerName by remember { mutableStateOf(TextFieldValue()) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Game Instructions")
+        },
+        text = {
+            Column {
+                Text("Step 1: A variable matrix will appear randomly with the block pattern displayed temporarily (3-10 seconds).")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 2: The player's task is to report the location of the blocks by clicking on the location of the matrix where the blocks are displayed.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Goodluck!!")
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onSearch()
+                    onDismiss()
+                }
+            ) {
+                Text("Got it!")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Text("Cancel")
+            }
+        }
+    )
+}
 
 fun checkWin(blueSquares: List<Boolean>, selectedSquares: List<Boolean>): Boolean {
     for((index, value) in blueSquares.withIndex()) {
@@ -212,7 +253,7 @@ fun ColorMemory(navController: NavController) {
             )
         }
     }
-
+    var isDialogVisible by remember { mutableStateOf(false) }
     Scaffold (
         topBar = {
             TopAppBar(
@@ -234,19 +275,29 @@ fun ColorMemory(navController: NavController) {
                         modifier = Modifier.padding(end = 16.dp),
                         style = TextStyle(fontSize = 20.sp, color = Color.Blue, fontWeight = FontWeight.Bold),
                     )
-                    Icon(
-                        imageVector = Icons.Filled.Info,
-                        contentDescription = "Guidelines",
-                        modifier = Modifier
-                            .padding(end = 12.dp)
-                            .clickable { /* Handle guidelines click */ }
-                    )
+                    IconButton(onClick = {
+                        isDialogVisible = true
+                    }) {
+                        Icon(Icons.Filled.Info, contentDescription = "Search")
+                    }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = Color(204, 255, 255),
                 )
-
             )
+            // Kiểm tra nếu Dialog nên hiển thị
+            if (isDialogVisible) {
+                SearchDialog2(
+                    onDismiss = {
+                        // Khi nhấn Cancel, ẩn Dialog
+                        isDialogVisible = false
+                    },
+                    onSearch = {
+                        // Xử lý hành động tìm kiếm, sau đó ẩn Dialog
+                        isDialogVisible = false
+                    }
+                )
+            }
         }
     ) {paddingValues ->
         Column(
