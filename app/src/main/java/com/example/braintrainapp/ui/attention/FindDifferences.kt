@@ -244,10 +244,10 @@ fun FinDifferences(navController: NavController){
                                 dialogShown.value = true
                             }
                         }
-                        .border(
-                            width = 2.dp,
-                            color = if (isBoxPressed) Color.Blue else Color.Transparent
-                        )
+//                        .border(
+//                            width = 2.dp,
+//                            color = if (isBoxPressed) Color.Blue else Color.Transparent
+//                        )
                 )
                 Image(
                     painter = painterResource(id = state.currentImage),

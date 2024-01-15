@@ -178,7 +178,7 @@ fun CatchFish(navController: NavController){
 
     //timeline
     var score by remember { mutableStateOf(0) }
-    val gameTime = 60
+    val gameTime = 5
     var remainingTime by remember {
         mutableStateOf(gameTime)
     }
@@ -445,7 +445,7 @@ fun CatchFish(navController: NavController){
                 }
                 Box(
                     modifier = Modifier
-                        .offset(x = 70.dp, y = 600.dp)
+                        .offset(x = 70.dp, y = 400.dp)
                         .size(boatSize)
                         .border(
                             width = 2.dp,
