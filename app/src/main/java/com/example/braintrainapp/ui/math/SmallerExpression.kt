@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -41,7 +43,47 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.braintrainapp.Screen
+import com.example.braintrainapp.ui.language_game.unscramble_words.SearchDialog6
 
+@Composable
+fun SearchDialog9(onDismiss: () -> Unit, onSearch: () -> Unit) {
+//    var playerName by remember { mutableStateOf(TextFieldValue()) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Game Instructions")
+        },
+        text = {
+            Column {
+                Text("Step 1: Calculate the calculations available on the screen.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 2: Choose the answer based on the requirements of the question..")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Time is 20s for each question")
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onSearch()
+                    onDismiss()
+                }
+            ) {
+                Text("Got it!")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Text("Cancel")
+            }
+        }
+    )
+}
 data class Expression(val expression: String, val value: Int)
 
 fun generateExpression(level: Int): Expression {
@@ -75,7 +117,7 @@ fun SmallerExpressionGame(navController: NavController) {
     var timLeft by remember { mutableStateOf(maxTime) }
     var numberOfQuestion by remember { mutableStateOf(1) }
     val maxNumberOfQuestion = 10
-
+    var isDialogVisible by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = isFail, key2 = isTimeOut) {
         timLeft = maxTime
         if (!isTimeOut ) {
@@ -134,14 +176,26 @@ fun SmallerExpressionGame(navController: NavController) {
                                     navController.popBackStack()
                                 }
                         )
-                        Icon(
-                            imageVector = Icons.Filled.Info,
-                            contentDescription = "Guidelines",
-                            modifier = Modifier
-                                .padding(end = 12.dp)
-                                .clickable { /* Handle guidelines click */ }
-                        )
+                        IconButton(onClick = {
+                            isDialogVisible = true
+                        }) {
+                            Icon(Icons.Filled.Info, contentDescription = "Search")
+                        }
+                        // Kiểm tra nếu Dialog nên hiển thị
+                        if (isDialogVisible) {
+                            SearchDialog9(
+                                onDismiss = {
+                                    // Khi nhấn Cancel, ẩn Dialog
+                                    isDialogVisible = false
+                                },
+                                onSearch = {
+                                    // Xử lý hành động tìm kiếm, sau đó ẩn Dialog
+                                    isDialogVisible = false
+                                }
+                            )
+                        }
                     }
+
 
                     Column(modifier = Modifier
                         .fillMaxSize()

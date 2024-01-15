@@ -23,8 +23,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -48,6 +50,44 @@ import com.example.braintrainapp.Screen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+@Composable
+fun SearchDialog10(onDismiss: () -> Unit, onSearch: () -> Unit) {
+//    var playerName by remember { mutableStateOf(TextFieldValue()) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Game Instructions")
+        },
+        text = {
+            Column {
+                Text("Step 1: Numbers will appear on the screen.")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Step 2: Choose 2 available numbers that match the answer required by the question.")
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onSearch()
+                    onDismiss()
+                }
+            ) {
+                Text("Got it!")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismiss()
+                }
+            ) {
+                Text("Cancel")
+            }
+        }
+    )
+}
 
 
 @Composable
@@ -70,7 +110,7 @@ fun FindSum(navController: NavController) {
     var isTimeOut by remember { mutableStateOf(false) }
     var gameOver by remember { mutableStateOf(false) }
     var timLeft by remember { mutableStateOf(maxTime) }
-
+    var isDialogVisible by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = isFail, key2 = isTimeOut) {
         timLeft = maxTime
         if (!isTimeOut ) {
@@ -129,15 +169,24 @@ fun FindSum(navController: NavController) {
                                     navController.popBackStack()
                                 }
                         )
-                        Icon(
-                            imageVector = Icons.Filled.Info,
-                            contentDescription = "Guidelines",
-                            modifier = Modifier
-                                .padding(end = 12.dp)
-                                .clickable {
-
+                        IconButton(onClick = {
+                            isDialogVisible = true
+                        }) {
+                            Icon(Icons.Filled.Info, contentDescription = "Search")
+                        }
+                        // Kiểm tra nếu Dialog nên hiển thị
+                        if (isDialogVisible) {
+                            SearchDialog10(
+                                onDismiss = {
+                                    // Khi nhấn Cancel, ẩn Dialog
+                                    isDialogVisible = false
+                                },
+                                onSearch = {
+                                    // Xử lý hành động tìm kiếm, sau đó ẩn Dialog
+                                    isDialogVisible = false
                                 }
-                        )
+                            )
+                        }
                     }
 
                     Column(modifier = Modifier

@@ -80,7 +80,9 @@ class FindDifferencesState {
         R.drawable.df_1,
         R.drawable.df_2,
         R.drawable.df_3,
-        R.drawable.df_4
+        R.drawable.df_4,
+        R.drawable.df_5
+
         // Add more image resource IDs for additional levels if needed
     )
 
@@ -91,7 +93,7 @@ class FindDifferencesState {
     // Modify the nextLevel function to set isWinDialogVisible to true when the player wins
     fun nextLevel() {
         // Move to the next level only if the current level is df_0, df_1, or df_2 and isWinner is true
-        if ((currentLevel == 0 || currentLevel == 1 || currentLevel == 2) && isWinner) {
+        if ((currentLevel == 0 || currentLevel == 1 || currentLevel == 2|| currentLevel == 3) && isWinner) {
             currentLevel++
             isWinner = false  // Reset isWinner after moving to the next level
             if (currentLevel < imageResources.size) {
@@ -121,6 +123,7 @@ class FindDifferencesState {
             1 -> Pair(290.dp, 310.dp)
             2 -> Pair(135.dp,265.dp)
             3 -> Pair(260.dp,120.dp)
+            4 -> Pair(130.dp,330.dp)
             // Add more cases for additional levels if needed
             else -> Pair(10.dp, 10.dp)
         }
@@ -243,7 +246,7 @@ fun FinDifferences(navController: NavController){
                         }
                         .border(
                             width = 2.dp,
-                            color = Color.Red
+                            color = if (isBoxPressed) Color.Blue else Color.Transparent
                         )
                 )
                 Image(
